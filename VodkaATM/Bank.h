@@ -1,4 +1,8 @@
 #pragma once
-class Bank {
+#include <string>
+using namespace std;
 
+class Bank {
+public:
+	string bank_Name;
 };

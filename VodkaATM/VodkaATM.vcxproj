@@ -143,6 +143,7 @@
     <ClCompile Include="VodkaATM.cpp" />
     <ClCompile Include="Account.cpp" />
     <ClCompile Include="Card.cpp" />
+    <ClCompile Include="Transaction.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Bank.h" />

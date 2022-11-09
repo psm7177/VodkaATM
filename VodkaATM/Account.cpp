@@ -1,5 +1,5 @@
+#pragma once
 #include "Account.h"
-using namespace std;
 
 int Account::GetValance() {
 	return valance;

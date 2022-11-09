@@ -1,3 +1,4 @@
+#pragma once
 #include "Language.h"
 #include "Transaction.h"
 #include "Card.h"
