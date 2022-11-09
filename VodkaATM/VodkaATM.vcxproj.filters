@@ -21,6 +21,12 @@
     <ClCompile Include="ATM.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Account.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Card.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Language.h">
@@ -33,6 +39,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="Bank.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Account.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>
