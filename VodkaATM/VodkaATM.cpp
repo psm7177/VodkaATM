@@ -3,8 +3,11 @@
 
 #pragma once
 #include <iostream>
+#include "ATM.h"
+#include "Language.h"
+using namespace std;
 
 int main()
 {
-    std::cout << "Hello World!\n";
+	ATM atm = ATM(123456, true, true, "Daegu", 500000);
 }
