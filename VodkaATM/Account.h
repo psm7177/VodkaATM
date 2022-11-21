@@ -2,7 +2,6 @@
 #include<string>
 #include "Bank.h"
 #include "Card.h"
-#include <string>
 using namespace std;
 
 class Account {
@@ -13,21 +12,20 @@ private:
 	Bank* accBank;
 	int accPW;
 public:
-	 bool changeFunds(int amount) {
-		this->availableFunds += amount;
+	 bool ChangeValance(int amount) {
+		this->valance += amount;
 	 }
 
 	 bool CanChangeFunds(int amount) {
-		 if (this->availableFunds + amount < 0) {
+		 if (this->valance + amount < 0) {
 			 return false;
 		 }
 		 return true;
 
 	 }
 	 Bank* GetBank() {
-		 return this->accountBank;
+		 return this->accBank;
 	 }
-
 	int GetValance();
 	string AddValance(int value);
 	string GetUserName();

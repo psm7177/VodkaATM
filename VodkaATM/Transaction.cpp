@@ -65,3 +65,11 @@ string Transaction::GetInfo() {
 	if (tnsType == "Withdraw") return GetWithdrawal();
 	if (tnsType == "Transfer") return GetTransfer();
 }
+
+string Transaction::GetType() {
+	return this->tnsType;
+}
+
+Account* Transaction::GetMyAccount() {
+	return this->myAccount;
+}
