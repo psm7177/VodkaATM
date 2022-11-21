@@ -1,8 +1,9 @@
 #pragma once
+#include <iostream>
 #include <string>
 using namespace std;
 
-class Language{
+class Language {
 public:
-	string name;
+	string Eng2Kor(string s);
 };
