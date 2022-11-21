@@ -1,3 +1,5 @@
+#pragma once
+#include "Transaction.h"
 #include "Bank.h"
 
 string Bank::Deposit(Account* account, int value, int fee) {
@@ -45,4 +47,4 @@ string Bank::Query(Transaction* transaction) {
 		return this->Transfer(myAccount, transaction->GetTransferAccount(), transaction->GetValue(), fee);
 	}
 
-};
+}

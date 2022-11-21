@@ -73,3 +73,15 @@ string Transaction::GetType() {
 Account* Transaction::GetMyAccount() {
 	return this->myAccount;
 }
+
+Account* Transaction::GetTransferAccount() {
+	return this->transferAccount;
+}
+
+int Transaction::GetValue() {
+	return this->value;
+}
+
+int Transaction::GetFee() {
+	return this->fee;
+}

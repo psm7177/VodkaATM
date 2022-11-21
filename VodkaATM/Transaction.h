@@ -3,7 +3,6 @@
 #include <string>
 using namespace std;
 
-#include "Bank.h"
 class Transaction {
 private:
 	static int idCount;

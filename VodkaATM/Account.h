@@ -1,9 +1,8 @@
-#pragma once
-#include<string>
-#include "Bank.h"
+class Bank;
 #include "Card.h"
-using namespace std;
+#include<string>
 
+using namespace std;
 class Account {
 private:
 	int valance;
@@ -12,20 +11,10 @@ private:
 	Bank* accBank;
 	int accPW;
 public:
-	 bool ChangeValance(int amount) {
-		this->valance += amount;
-	 }
+	void ChangeValance(int amount);
 
-	 bool CanChangeFunds(int amount) {
-		 if (this->valance + amount < 0) {
-			 return false;
-		 }
-		 return true;
-
-	 }
-	 Bank* GetBank() {
-		 return this->accBank;
-	 }
+	bool CanChangeFunds(int amount);
+	Bank* GetBank();
 	int GetValance();
 	string AddValance(int value);
 	string GetUserName();
