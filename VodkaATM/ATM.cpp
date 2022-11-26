@@ -4,7 +4,7 @@
 
 ATM::ATM() {
 	int transaction_id = 0;
-	cout << "Default ATM Instructor" << endl;
+	cout << "Default ATM Constructor" << endl;
 }
 
 string ATM::control[2] = {
@@ -90,12 +90,16 @@ string ATM::GetMain(string s) {
 }
 void ATM::ShowHomepage() {
 	string home = "Welcome\n\nTo start, please insert your debit card";
+	ShowUI(home);
+}
+void ATM::ShowUI(string s) {
+	ClearOutput();
 	if (descriptor == nullptr) {
-		cout << GetMain(home) << endl;
+		cout << GetMain(s) << endl;
 		cout << control[0] << endl;
 	}
 	else {
-		cout << GetMain(descriptor->Eng2Kor(home)) << endl;
+		cout << GetMain(descriptor->Eng2Kor(s)) << endl;
 		cout << control[1] << endl;
 	}
 }
@@ -249,7 +253,7 @@ void ATM::ShowTransactionHistory(bool isAdmin) {
 		fout.close();
 	}
 	else {
-		cout << history << endl;
+		ShowUI(history);
 	}
 
 }

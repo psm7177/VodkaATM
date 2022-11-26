@@ -28,6 +28,7 @@ protected:
 	void ClearOutput();
 	string GetMain(string s);
 	void ShowHomepage();
+	void ShowUI(string s);
 	void AskLanguage();
 
 	string RunSession(); // return error message, session start

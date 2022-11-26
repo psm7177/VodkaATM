@@ -7,12 +7,12 @@ Transaction::Transaction(int id) {
 }
 string Transaction::GetDeposit() {
 	string ans = string();
-	ans += "Transaction ID:\t" + to_string(id) + "\n";
+	ans += "Transaction ID: " + to_string(id) + "\n";
 	ans += tnsType + " occured\n";
-	ans += "to :\t" + (*myAccount).GetAccNum() + "\n";
-	ans += "Transaction Amount:\t" + to_string(value) + "\n";
-	ans += "Transaction Fee:\t" + to_string(fee) + "\n";
-	ans += "Remark:\t" + errorMessage + "\n";
+	ans += "to : " + (*myAccount).GetAccNum() + "\n";
+	ans += "Transaction Amount: " + to_string(value) + "\n";
+	ans += "Transaction Fee: " + to_string(fee) + "\n";
+	ans += "Remark: " + errorMessage + "\n";
 	return ans;
 }
 string Transaction::GetWithdrawal() {
