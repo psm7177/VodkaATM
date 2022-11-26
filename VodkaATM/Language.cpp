@@ -10,13 +10,13 @@ string Language::Eng2Kor(string s) {
 	if (s == "Welcome\n\nTo start, please insert your debit card") {
 		return "반갑습니다\n\n거래를 시작하시려면 카드를 넣어주세요";
 	}
-	if (s == "Transaction ID: ") {
-		return "거래 아이디: ";
+	if (s == "Deposit") {
+		return "입금";
 	}
-	if (s == " occured\n") {
-		return " \n";
+	if (s == "Withdrawal") {
+		return "출금";
 	}
-	if (s == "Transaction ID: ") {
-		return "거래 아이디: ";
+	if (s == "Transfer") {
+		return "이체";
 	}
 }

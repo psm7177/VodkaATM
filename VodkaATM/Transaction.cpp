@@ -1,5 +1,6 @@
 #pragma once
 #include "Transaction.h"
+#include "Language.h"
 
 Transaction::Transaction(int id) {
 	this->id = id;
@@ -7,37 +8,72 @@ Transaction::Transaction(int id) {
 }
 string Transaction::GetDeposit() {
 	string ans = string();
-	ans += "Transaction ID: " + to_string(id) + "\n";
-	ans += tnsType + " occured\n";
-	if (myAccount == nullptr) ans += "to : \n";
-	else ans += "to : " + (*myAccount).GetAccNum() + "\n";
-	ans += "Transaction Amount: " + to_string(value) + "\n";
-	ans += "Transaction Fee: " + to_string(fee) + "\n";
-	ans += "Remark: " + errorMessage + "\n";
+	if (Language::onoff) {
+		ans += "거래 아이디: " + to_string(id) + "\n";
+		ans += Language::Eng2Kor(tnsType) + "\n";
+		if (myAccount == nullptr) ans += "입금 계좌: \n";
+		else ans += "입금 계좌 : " + (*myAccount).GetAccNum() + "\n";
+		ans += "거래량: " + to_string(value) + "\n";
+		ans += "거래 수수료: " + to_string(fee) + "\n";
+		ans += "특이사항: " + errorMessage + "\n";
+	}
+	else {
+		ans += "Transaction ID: " + to_string(id) + "\n";
+		ans += tnsType + " occured\n";
+		if (myAccount == nullptr) ans += "to : \n";
+		else ans += "to : " + (*myAccount).GetAccNum() + "\n";
+		ans += "Transaction Amount: " + to_string(value) + "\n";
+		ans += "Transaction Fee: " + to_string(fee) + "\n";
+		ans += "Remark: " + errorMessage + "\n";
+	}
 	return ans;
 }
 string Transaction::GetWithdrawal() {
 	string ans = string();
-	ans += "Transaction ID: " + to_string(id) + "\n";
-	ans += tnsType + " occured\n";
-	if (myAccount == nullptr) ans += "from : \n";
-	else ans += "from : " + (*myAccount).GetAccNum() + "\n";
-	ans += "Transaction Amount: " + to_string(value) + "\n";
-	ans += "Transaction Fee: " + to_string(fee) + "\n";
-	ans += "Remark: " + errorMessage + "\n";
+	if (Language::onoff) {
+		ans += "거래 아이디: " + to_string(id) + "\n";
+		ans += Language::Eng2Kor(tnsType) + "\n";
+		if (myAccount == nullptr) ans += "출금 계좌 : \n";
+		else ans += "출금 계좌 : " + (*myAccount).GetAccNum() + "\n";
+		ans += "거래량: " + to_string(value) + "\n";
+		ans += "거래 수수료: " + to_string(fee) + "\n";
+		ans += "특이사항: " + errorMessage + "\n";
+	}
+	else {
+		ans += "Transaction ID: " + to_string(id) + "\n";
+		ans += tnsType + " occured\n";
+		if (myAccount == nullptr) ans += "from : \n";
+		else ans += "from : " + (*myAccount).GetAccNum() + "\n";
+		ans += "Transaction Amount: " + to_string(value) + "\n";
+		ans += "Transaction Fee: " + to_string(fee) + "\n";
+		ans += "Remark: " + errorMessage + "\n";
+	}
 	return ans;
 }
 string Transaction::GetTransfer() {
 	string ans = string();
-	ans += "Transaction ID: " + to_string(id) + "\n";
-	ans += tnsType + " occured\n";
-	if (myAccount == nullptr) ans += "from : \n";
-	else ans += "from : " + (*myAccount).GetAccNum() + "\n";
-	if (transferAccount == nullptr) ans += "to : \n";
-	else ans += "to : " + (*transferAccount).GetAccNum() + "\n";
-	ans += "Transaction Amount: " + to_string(value) + "\n";
-	ans += "Transaction Fee: " + to_string(fee) + "\n";
-	ans += "Remark: " + errorMessage + "\n";
+	if (Language::onoff) {
+		ans += "거래 아이디: " + to_string(id) + "\n";
+		ans += Language::Eng2Kor(tnsType) + "\n";
+		if (myAccount == nullptr) ans += "보낼 계좌 : \n";
+		else ans += "보낼 계좌 : " + (*myAccount).GetAccNum() + "\n";
+		if (transferAccount == nullptr) ans += "받을 계좌 : \n";
+		else ans += "받을 계좌 : " + (*transferAccount).GetAccNum() + "\n";
+		ans += "거래량: " + to_string(value) + "\n";
+		ans += "거래 수수료: " + to_string(fee) + "\n";
+		ans += "특이사항: " + errorMessage + "\n";
+	}
+	else {
+		ans += "Transaction ID: " + to_string(id) + "\n";
+		ans += tnsType + " occured\n";
+		if (myAccount == nullptr) ans += "from : \n";
+		else ans += "from : " + (*myAccount).GetAccNum() + "\n";
+		if (transferAccount == nullptr) ans += "to : \n";
+		else ans += "to : " + (*transferAccount).GetAccNum() + "\n";
+		ans += "Transaction Amount: " + to_string(value) + "\n";
+		ans += "Transaction Fee: " + to_string(fee) + "\n";
+		ans += "Remark: " + errorMessage + "\n";
+	}
 	return ans;
 }
 void Transaction::SetDeposit(Account* account, int value, int fee, string message) {
