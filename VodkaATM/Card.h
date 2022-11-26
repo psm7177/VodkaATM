@@ -4,9 +4,11 @@ using namespace std;
 
 class Card {
 private:
-	bool isAdmin;
 	Account* account;
 public:
+	bool isAdmin;
+	int id;
+	static int cardIdCount;
 	Card(bool, Account*);
 	Account* GetAccount();
 };

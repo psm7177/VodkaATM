@@ -9,7 +9,8 @@ string Transaction::GetDeposit() {
 	string ans = string();
 	ans += "Transaction ID: " + to_string(id) + "\n";
 	ans += tnsType + " occured\n";
-	ans += "to : " + (*myAccount).GetAccNum() + "\n";
+	if (myAccount == nullptr) ans += "to : \n";
+	else ans += "to : " + (*myAccount).GetAccNum() + "\n";
 	ans += "Transaction Amount: " + to_string(value) + "\n";
 	ans += "Transaction Fee: " + to_string(fee) + "\n";
 	ans += "Remark: " + errorMessage + "\n";
@@ -17,23 +18,26 @@ string Transaction::GetDeposit() {
 }
 string Transaction::GetWithdrawal() {
 	string ans = string();
-	ans += "Transaction ID:\t" + to_string(id) + "\n";
+	ans += "Transaction ID: " + to_string(id) + "\n";
 	ans += tnsType + " occured\n";
-	ans += "from :\t" + (*myAccount).GetAccNum() + "\n";
-	ans += "Transaction Amount:\t" + to_string(value) + "\n";
-	ans += "Transaction Fee:\t" + to_string(fee) + "\n";
-	ans += "Remark:\t" + errorMessage + "\n";
+	if (myAccount == nullptr) ans += "from : \n";
+	else ans += "from : " + (*myAccount).GetAccNum() + "\n";
+	ans += "Transaction Amount: " + to_string(value) + "\n";
+	ans += "Transaction Fee: " + to_string(fee) + "\n";
+	ans += "Remark: " + errorMessage + "\n";
 	return ans;
 }
 string Transaction::GetTransfer() {
 	string ans = string();
-	ans += "Transaction ID:\t" + to_string(id) + "\n";
+	ans += "Transaction ID: " + to_string(id) + "\n";
 	ans += tnsType + " occured\n";
-	ans += "from :\t" + (*myAccount).GetAccNum() + "\n";
-	ans += "to :\t" + (*transferAccount).GetAccNum() + "\n";
-	ans += "Transaction Amount:\t" + to_string(value) + "\n";
-	ans += "Transaction Fee:\t" + to_string(fee) + "\n";
-	ans += "Remark:\t" + errorMessage + "\n";
+	if (myAccount == nullptr) ans += "from : \n";
+	else ans += "from : " + (*myAccount).GetAccNum() + "\n";
+	if (transferAccount == nullptr) ans += "to : \n";
+	else ans += "to : " + (*transferAccount).GetAccNum() + "\n";
+	ans += "Transaction Amount: " + to_string(value) + "\n";
+	ans += "Transaction Fee: " + to_string(fee) + "\n";
+	ans += "Remark: " + errorMessage + "\n";
 	return ans;
 }
 void Transaction::SetDeposit(Account* account, int value, int fee, string message) {

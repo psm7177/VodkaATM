@@ -3,6 +3,8 @@
 #include "Transaction.h"
 #include "Card.h"
 #include "Bank.h"
+#include "BankManager.h"
+#include <unordered_map>
 #include <stdlib.h>
 #include <time.h>
 #include <list>
@@ -21,6 +23,7 @@ protected:
 
 	int sessionCount;
 	int cash;
+	static unordered_map<int, Card*> allCard;
 
 	bool isPrimary();
 
@@ -31,8 +34,6 @@ protected:
 	void ShowUI(string s);
 	void AskLanguage();
 
-	string RunSession(); // return error message, session start
-
 public:
 	ATM();
 	static list<Bank*> Banks;
@@ -42,9 +43,11 @@ public:
 	string Deposit(int money, string message, bool isit_cash); // Deposit cash, make transaction
 	string Withdrawal(int money, string message); // Withdraw cash, make transaction
 	string Transfer(Account* dest_account, int money, string message, bool isit_cash); // Transfer cash, maake transaction
+	string Transfer(Account* source_account, Account* dest_account, int money, string message, bool isit_cash); // Transfer cash, maake transaction
 	//virtual Card* IssueCard(string bankname, string accnum); // make card
 	string GetTransactionHistory(bool isAdmin); // Show Transaction History
 	void ShowTransactionHistory(bool isAdmin);
+	string RunSession(); // return error message, session start
 };
 
 class MultiATM : public ATM {
