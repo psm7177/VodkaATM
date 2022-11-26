@@ -1,4 +1,5 @@
 #pragma once
+#include <fstream>
 #include "ATM.h"
 
 ATM::ATM() {
@@ -161,11 +162,14 @@ string ATM::CloseSession() {
 	return "End Session";
 }
 
-string ATM::Deposit(int money, string message) {
+string ATM::Deposit(int money, string message, bool isit_cash) {
 	int fee = 0;
 	Transaction* newtransaction = new Transaction(transaction_id);
-	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+	if (!isPrimary()) {
 		fee += 1000;
+	}
+	if (isit_cash) {
+		this->cash += money;
 	}
 	newtransaction->SetDeposit(this->insertedCard->GetAccount(), money, fee, message);
 	transaction_id++;
@@ -174,10 +178,15 @@ string ATM::Deposit(int money, string message) {
 	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
+
 string ATM::Withdraw(int money, string message) {
+	if (this->cash < money) {
+		return "low money error";
+	}
+	this->cash -= money;
 	int fee = 1000;
 	Transaction* newtransaction = new Transaction(transaction_id);
-	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+	if (!isPrimary()) {
 		fee += 1000;
 	}
 	newtransaction->SetWithdraw(this->insertedCard->GetAccount(), money, fee, message);
@@ -190,7 +199,7 @@ string ATM::Withdraw(int money, string message) {
 string ATM::Transfer(Account* dest_account, int money, string message) {
 	int fee = 2000;
 	Transaction* newtransaction = new Transaction(transaction_id);
-	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+	if (!isPrimary()) {
 		fee += 1000;
 	}
 	if (dest_account->GetAccBank()->bankName == primaryBank) {
@@ -220,14 +229,29 @@ Card* MultiATM::IssueCard(bool isadmin, Account* newaccount) {
 	return newcard;
 }
 
-string ATM::TransactionHistory() {
+string ATM::GetTransactionHistory(bool isAdmin) {
+	list<Transaction*> transactionList = isAdmin ? this->all_transactions : this->transactions;
+
 	string ret = "";
-	for (auto i = this->transactions.begin(); i != this->transactions.end(); i++) {
+	for (auto i = transactionList.begin(); i != transactionList.end(); i++) {
 		Transaction* t = *i;
 		ret += t->GetInfo();
 		ret += "\n";
 	}
 	return ret;
+}
+
+void ATM::ShowTransactionHistory(bool isAdmin) {
+	string history = this->GetTransactionHistory(isAdmin);
+	if (isAdmin) {
+		ofstream fout("output.txt");
+		fout << history << endl;
+		fout.close();
+	}
+	else {
+		cout << history << endl;
+	}
+
 }
 
 string ATM::RunSession() {
@@ -241,4 +265,8 @@ string ATM::VerifyCard(int pw) {
 		return "Login";
 	}
 	return "Wrong password";
+}
+
+bool ATM::isPrimary() {
+	return this->insertedCard->GetAccount()->GetAccBank()->bankName == this->primaryBank;
 }
