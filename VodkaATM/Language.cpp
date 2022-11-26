@@ -61,11 +61,11 @@ string Language::Eng2Kor(string s) {
 	if (s == "Transaction ID: ") {
 		return "거래 아이디: ";
 	}
-	if (s == " occured\n") {
-		return " \n";
+	if (s == "Withdrawal") {
+		return "출금";
 	}
-	if (s == "Transaction ID: ") {
-		return "거래 아이디: ";
+	if (s == "Transfer") {
+		return "이체";
 	}
 	if (s == "exist same account number in ") {
 		return "똑같은 계좌 번호가 존재합니다.";
