@@ -20,7 +20,7 @@ Account* Bank::GetAccount(string accNumber) {
 }
 
 Account* Bank::CreateAccount(string username, int pw, const char* accountNumber, int valance) {
-	Account* acc = new Account(username, this, pw, &string(accountNumber), valance);
+	Account* acc = new Account(username, this, pw, accountNumber, valance);
 	this->accountMap[acc->GetAccNum()] = acc;
 	return acc;
 }

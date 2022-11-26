@@ -12,6 +12,6 @@ public:
 	string Deposit(Account* account, int value, int fee);
 	string Withdrawal(Account* account, int value, int fee);
 	string Transfer(Account* fromAccount, Account* toAccount, int value, int fee);
-	Account* CreateAccount(string username, int pw, const char* accountNumber = nullptr, int valance = 0);
+	Account* CreateAccount(string username, int pw, const char* accountNumber = "", int valance = 0);
 	string Query(Transaction* transaction);
 };

@@ -2,19 +2,19 @@
 #include "Account.h"
 
 int Account::accNumberCount = 0;
-Account::Account(string name, Bank* bank, int pw, string* accountNumber, int valance) {
+Account::Account(string name, Bank* bank, int pw, string accountNumber, int valance) {
 	this->userName = name;
 	this->accBank = bank;
 	this->accPW = pw;
 	this->valance = valance;
 
-	if (accountNumber == nullptr) {
+	if (accountNumber == "") {
 		char accnum[15];
 		snprintf(accnum, 12, "%012d", ++this->accNumberCount);
 		this->accNumber = string(accnum);
 	}
 	else {
-		this->accNumber = *accountNumber;
+		this->accNumber = accountNumber;
 	}
 }
 
