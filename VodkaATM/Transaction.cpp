@@ -83,3 +83,7 @@ int Transaction::GetValue() {
 int Transaction::GetFee() {
 	return this->fee;
 }
+
+void Transaction::SetErrorMessage(string e) {
+	this->errorMessage = e;
+}

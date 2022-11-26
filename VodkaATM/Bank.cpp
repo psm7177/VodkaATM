@@ -28,7 +28,7 @@ Account* Bank::CreateAccount(string username, int pw, const char* accountNumber,
 void Bank::Deposit(Account* account, int value, int fee) {
 	int amount = value - fee;
 	if (!account->CanChangeFunds(amount)) {
-		throw "error"; // TODO: Write error Message
+		throw "low money error" + account->GetAccNum(); // TODO: Write error Message
 	}
 
 	account->ChangeValance(amount);
@@ -37,7 +37,7 @@ void Bank::Deposit(Account* account, int value, int fee) {
 void Bank::Withdrawal(Account* account, int value, int fee) {
 	int amount = -value - fee;
 	if (!account->CanChangeFunds(amount)) {
-		throw "error"; // TODO: Write error Message
+		throw "low money error" + account->GetAccNum(); // TODO: Write error Message
 	}
 
 	account->ChangeValance(amount);
@@ -45,10 +45,10 @@ void Bank::Withdrawal(Account* account, int value, int fee) {
 
 void Bank::Transfer(Account* fromAccount, Account* toAccount, int value, int fee) {
 	if (!fromAccount->CanChangeFunds(-value - fee)) {
-		throw "error";
+		throw "low money error in " + fromAccount->GetAccNum();
 	}
 	if (!toAccount->CanChangeFunds(value)) {
-		throw "error";
+		throw "low money error in " + toAccount->GetAccNum();
 	}
 	fromAccount->ChangeValance(-value - fee);
 	toAccount->ChangeValance(value);
@@ -69,9 +69,10 @@ string Bank::Query(Transaction* transaction) {
 		else if (type == "Transfer") {
 			this->Transfer(myAccount, transaction->GetTransferAccount(), transaction->GetValue(), fee);
 		}
-		return "Well done"; //
+		return "Well done";
 	}
 	catch (string e) {
+		transaction->SetErrorMessage(e);
 		return e;
 	}
 }
