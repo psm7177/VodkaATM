@@ -44,6 +44,14 @@ void Bank::Withdrawal(Account* account, int value, int fee) {
 }
 
 void Bank::Transfer(Account* fromAccount, Account* toAccount, int value, int fee) {
+	if (fromAccount == nullptr) {
+		//cash transfer
+		if (!toAccount->CanChangeFunds(value - fee)) {
+			throw "low money error in " + toAccount->GetAccNum();
+		}
+		toAccount->ChangeValance(value - fee);
+		return;
+	}
 	if (!fromAccount->CanChangeFunds(-value - fee)) {
 		throw "low money error in " + fromAccount->GetAccNum();
 	}
