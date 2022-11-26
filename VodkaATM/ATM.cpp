@@ -166,6 +166,31 @@ string ATM::CloseSession() {
 	return "End Session";
 }
 
+string Check_bills(int money, bool isit_cash) {
+	int count = 0;
+	int limit;
+	if (isit_cash) limit = 50;
+	else limit = 30;
+	while (money > 50000) {
+		money -= 50000;
+		++count;
+	}
+	while (money > 10000) {
+		money -= 10000;
+		++count;
+	}
+	while (money > 5000) {
+		money -= 5000;
+		++count;
+	}
+	while (money > 1000) {
+		money -= 1000;
+		++count;
+	}
+	if (count > limit) return "Too many bills";
+	else return "";
+}
+
 string ATM::Deposit(int money, string message, bool isit_cash) {
 	int fee = 0;
 	Transaction* newtransaction = new Transaction(transaction_id);
@@ -175,11 +200,15 @@ string ATM::Deposit(int money, string message, bool isit_cash) {
 	if (isit_cash) {
 		this->cash += money;
 	}
+
+	string error = Check_bills(money, isit_cash);
+	if (error == "Too many bills") return error;
+
 	newtransaction->SetDeposit(this->insertedCard->GetAccount(), money, fee, message);
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
-	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
 
@@ -193,6 +222,10 @@ string ATM::Withdrawal(int money, string message) {
 	if (!isPrimary()) {
 		fee += 1000;
 	}
+
+	string error = Check_bills(money - fee, true);
+	if (error == "Too many bills") return error;
+
 	newtransaction->SetWithdrawal(this->insertedCard->GetAccount(), money, fee, message);
 	transaction_id++;
 	transactions.push_back(newtransaction);
@@ -200,7 +233,7 @@ string ATM::Withdrawal(int money, string message) {
 	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
-string ATM::Transfer(Account* dest_account, int money, string message) {
+string ATM::Transfer(Account* dest_account, int money, string message, bool isit_cash) {
 	int fee = 2000;
 	Transaction* newtransaction = new Transaction(transaction_id);
 	if (!isPrimary()) {
@@ -209,6 +242,10 @@ string ATM::Transfer(Account* dest_account, int money, string message) {
 	if (dest_account->GetAccBank()->bankName != primaryBank) {
 		fee += 1000;
 	}
+
+	string error = Check_bills(money, isit_cash);
+	if (error == "Too many bills") return error;
+
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
 	newtransaction->SetTransfer(this->insertedCard->GetAccount(), dest_account, money, fee, message);
