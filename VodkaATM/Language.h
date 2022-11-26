@@ -5,5 +5,6 @@ using namespace std;
 
 class Language {
 public:
-	string Eng2Kor(string s);
+	static bool onoff;
+	static string Eng2Kor(string s);
 };
