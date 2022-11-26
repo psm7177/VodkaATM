@@ -1,10 +1,21 @@
 #pragma once
 #include "Account.h"
 
-Account::Account(string name, Bank* bank, int pw) {
+int Account::accNumberCount = 0;
+Account::Account(string name, Bank* bank, int pw, string* accountNumber, int valance) {
 	this->userName = name;
 	this->accBank = bank;
 	this->accPW = pw;
+	this->valance = valance;
+
+	if (accountNumber == nullptr) {
+		char accnum[15];
+		snprintf(accnum, 12, "%012d", ++this->accNumberCount);
+		this->accNumber = string(accnum);
+	}
+	else {
+		this->accNumber = *accountNumber;
+	}
 }
 
 bool Account::CheckPW(int pw) {

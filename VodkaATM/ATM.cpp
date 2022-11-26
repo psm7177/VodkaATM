@@ -236,3 +236,12 @@ string ATM::VerifyCard(int pw) {
 	}
 	return "Wrong password";
 }
+string ATM::TransactionHistory() {
+	string ret = "";
+	for (auto i = this->transactions.begin(); i != this->transactions.end(); i++) {
+		Transaction* t = *i;
+		ret += t->GetInfo();
+		ret += "\n";
+	}
+	return ret;
+}

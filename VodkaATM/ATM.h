@@ -29,6 +29,7 @@ protected:
 	void AskLanguage();
 
 	string RunSession(); // return error message, session start
+	string TransactionHistory();
 
 public:
 	ATM();
