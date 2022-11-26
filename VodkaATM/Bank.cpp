@@ -25,49 +25,52 @@ Account* Bank::CreateAccount(string username, int pw, const char* accountNumber,
 	return acc;
 }
 
-string Bank::Deposit(Account* account, int value, int fee) {
+void Bank::Deposit(Account* account, int value, int fee) {
 	if (!account->CanChangeFunds(value - fee)) {
-		return "error"; // TODO: Write error Message
+		throw "error"; // TODO: Write error Message
 	}
 
 	account->ChangeValance(value - fee);
-	return nullptr;
 }
 
-string Bank::Withdrawal(Account* account, int value, int fee) {
+void Bank::Withdrawal(Account* account, int value, int fee) {
 	if (!account->CanChangeFunds(-value - fee)) {
-		return "error"; // TODO: Write error Message
+		throw "error"; // TODO: Write error Message
 	}
 
 	account->ChangeValance(value - fee);
-	return nullptr;
 }
 
-string Bank::Transfer(Account* fromAccount, Account* toAccount, int value, int fee) {
+void Bank::Transfer(Account* fromAccount, Account* toAccount, int value, int fee) {
 	if (!fromAccount->CanChangeFunds(-value - fee)) {
-		return "error";
+		throw "error";
 	}
 	if (!toAccount->CanChangeFunds(value)) {
-		return "error";
+		throw "error";
 	}
 	fromAccount->ChangeValance(-value - fee);
 	toAccount->ChangeValance(value);
 
-	return nullptr;
 }
 
 string Bank::Query(Transaction* transaction) {
 	string type = transaction->GetType();
 	Account* myAccount = transaction->GetMyAccount();
 	int fee = transaction->GetFee();
-	if (type == "Deposit") {
-		return this->Deposit(myAccount, transaction->GetValue(), fee);
+	try {
+		if (type == "Deposit") {
+			this->Deposit(myAccount, transaction->GetValue(), fee);
+		}
+		else if (type == "Withdrawal") {
+			this->Withdrawal(myAccount, transaction->GetValue(), fee);
+		}
+		else if (type == "Transfer") {
+			this->Transfer(myAccount, transaction->GetTransferAccount(), transaction->GetValue(), fee);
+		}
+		return "Well done"; //
 	}
-	else if (type == "Withdrawal") {
-		return this->Withdrawal(myAccount, transaction->GetValue(), fee);
+	catch (string e) {
+		return e;
 	}
-	else if (type == "Transfer") {
-		return this->Transfer(myAccount, transaction->GetTransferAccount(), transaction->GetValue(), fee);
-	}
-
 }
+	

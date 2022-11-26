@@ -9,9 +9,9 @@ public:
 	Bank(string name);
 	~Bank();
 	Account* GetAccount(string accNumber);
-	string Deposit(Account* account, int value, int fee);
-	string Withdrawal(Account* account, int value, int fee);
-	string Transfer(Account* fromAccount, Account* toAccount, int value, int fee);
+	void Deposit(Account* account, int value, int fee);
+	void Withdrawal(Account* account, int value, int fee);
+	void Transfer(Account* fromAccount, Account* toAccount, int value, int fee);
 	Account* CreateAccount(string username, int pw, const char* accountNumber = "", int valance = 0);
 	string Query(Transaction* transaction);
 };
