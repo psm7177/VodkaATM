@@ -221,7 +221,13 @@ Card* MultiATM::IssueCard(bool isadmin, Account* newaccount) {
 }
 
 string ATM::TransactionHistory() {
-	return " ";
+	string ret = "";
+	for (auto i = this->transactions.begin(); i != this->transactions.end(); i++) {
+		Transaction* t = *i;
+		ret += t->GetInfo();
+		ret += "\n";
+	}
+	return ret;
 }
 
 string ATM::RunSession() {
