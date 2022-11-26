@@ -1,6 +1,7 @@
 #pragma once
 #include <fstream>
 #include "ATM.h"
+using namespace std;
 
 unordered_map<int, Card*> ATM::allCard = unordered_map<int, Card*>();
 
@@ -171,7 +172,7 @@ string ATM::CloseSession() {
 	return "End Session";
 }
 
-string Check_bills(int money, bool isit_cash) {
+void Check_bills(int money, bool isit_cash) {
 	int count = 0;
 	int limit;
 	if (isit_cash) limit = 50;
@@ -192,8 +193,7 @@ string Check_bills(int money, bool isit_cash) {
 		money -= 1000;
 		++count;
 	}
-	if (count > limit) return "Too many bills";
-	else return "";
+	if (count > limit) throw "Too many bills";
 }
 
 string ATM::Deposit(int money, string message, bool isit_cash) {
@@ -206,20 +206,22 @@ string ATM::Deposit(int money, string message, bool isit_cash) {
 		this->cash += money;
 	}
 
-	string error = Check_bills(money, isit_cash);
-	if (error == "Too many bills") return error;
+	Check_bills(money, isit_cash);
 
 	newtransaction->SetDeposit(this->insertedCard->GetAccount(), money, fee, message);
+	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
-	error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
 
 string ATM::Withdrawal(int money, string message) {
+	if (money > 500000) {
+		throw string("Too large money");
+	}
 	if (this->cash < money) {
-		return "low money error";
+		throw string("low money error");
 	}
 	this->cash -= money;
 	int fee = 1000;
@@ -228,14 +230,13 @@ string ATM::Withdrawal(int money, string message) {
 		fee += 1000;
 	}
 
-	string error = Check_bills(money - fee, true);
-	if (error == "Too many bills") return error;
+	Check_bills(money - fee, true);
 
 	newtransaction->SetWithdrawal(this->insertedCard->GetAccount(), money, fee, message);
+	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
-	error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
 string ATM::Transfer(Account* dest_account, int money, string message, bool isit_cash) {
@@ -251,17 +252,15 @@ string ATM::Transfer(Account* source_account, Account* dest_account, int money, 
 		fee += 1000;
 	}
 
-	string error;
 	if (dest_account != nullptr) {
-		error = Check_bills(money, isit_cash);
-		if (error == "Too many bills") return error;
+		Check_bills(money, isit_cash);
 	}
 
+	newtransaction->SetTransfer(source_account, dest_account, money, fee, message);
+	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
-	newtransaction->SetTransfer(source_account, dest_account, money, fee, message);
 	transaction_id++;
-	error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
 
@@ -313,10 +312,11 @@ void ATM::ShowTransactionHistory(bool isAdmin) {
 string ATM::RunSession() {
 	if (bilingual) AskLanguage();
 	ShowHomepage();
-	int input_int;
-	cin >> input_int;
+	string input;
+	cin >> input;
+	if (input == "Cancel") return CloseSession();
 	try {
-		InsertCard(allCard[input_int]);
+		InsertCard(allCard[stoi(input)]);
 	}
 	catch (...) {
 		ShowUI("Not valid card");
@@ -324,8 +324,9 @@ string ATM::RunSession() {
 
 	ShowUI("Input your password");
 	for (int i = 0; i < 3; ++i) {
-		cin >> input_int;
-		string message = VerifyCard(input_int);
+		cin >> input;
+		if (input == "Cancel") return CloseSession();
+		string message = VerifyCard(stoi(input));
 		if (message == "Login") break;
 		else {
 			if (i == 2) return CloseSession();
@@ -334,52 +335,66 @@ string ATM::RunSession() {
 	}
 
 	for (int i = 0; i < 3; ++i) {
-		int transfer_type = 1;
-		int money;
-		int input_int3;
-		ShowUI("1. Deposit\n2. Withdrawal\n3. Transfer\n4. Exit");
-		cin >> input_int;
-		if (input_int == 4) {
-			return CloseSession();
-		}
-		if (input_int == 3) {
+		string transfer_type;
+		string money;
+		string input2;
+		ShowUI("1. Deposit\n2. Withdrawal\n3. Transfer");
+		cin >> input;
+		if (input == "Cancel") return CloseSession();
+		if (stoi(input) == 3) {
 			ShowUI("1. Cash Transfer\n2. Account Transfer");
 			cin >> transfer_type;
+			if (transfer_type == "Cancel") return CloseSession();
 		}
 		ShowUI("1. Cash\n2. Check");
-		cin >> input_int3;
-		bool is_cash = input_int3 == 1 ? true : false;
+		cin >> input2;
+		if (input2 == "Cancel") return CloseSession();
+		bool is_cash = stoi(input2) == 1 ? true : false;
 		ShowUI("Amount of Money");
 		cin >> money;
+		if (money == "Cancel") return CloseSession();
 		string message;
-		switch (input_int) {
-		case 1:
-			message = Deposit(money, "", is_cash);
-			break;
-		case 2:
-			message = Withdrawal(money, "");
-			break;
-		case 3:
-			string bank_name;
-			string acc_num;
-			ShowUI("Input bank name to transfer");
-			cin >> bank_name;
-			ShowUI("Input account number to tranfer");
-			cin >> acc_num;
-			if (transfer_type == 1) {
-				message = Transfer(BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
-					money, "", is_cash);
+		try {
+			switch (stoi(input)) {
+			case 1:
+				message = Deposit(stoi(money), "", is_cash);
+				break;
+			case 2:
+				message = Withdrawal(stoi(money), "");
+				break;
+			case 3:
+				string sbank_name;
+				string sacc_name;
+				ShowUI("Input source bank name");
+
+				string bank_name;
+				string acc_num;
+				ShowUI("Input bank name to transfer");
+				cin >> bank_name;
+				if (bank_name == "Cancel") return CloseSession();
+				ShowUI("Input account number to tranfer");
+				cin >> acc_num;
+				if (acc_num == "Cancel") return CloseSession();
+				if (stoi(transfer_type) == 1) {
+					message = Transfer(BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
+						stoi(money), "", is_cash);
+				}
+				else {
+					message = Transfer(this->insertedCard->GetAccount(), \
+						BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
+						stoi(money), "", is_cash);
+				}
+				break;
 			}
-			else {
-				message = Transfer(this->insertedCard->GetAccount(),\
-					BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
-					money, "", is_cash);
-			}
-			break;
+		}
+		catch (string e) {
+			ShowUI(e);
+			return CloseSession();
 		}
 		ShowUI(message + "\n1. Next transaction\n2. Exit");
-		cin >> input_int;
-		if (input_int == 2) return CloseSession();
+		cin >> input;
+		if (input == "Cancel") return CloseSession();
+		if (stoi(input) == 2) return CloseSession();
 	}
 	return CloseSession();
 }

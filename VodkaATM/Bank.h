@@ -1,4 +1,6 @@
 #pragma once
+#include "Transaction.h"
+#include "BankManager.h"
 #include <unordered_map>
 using namespace std;
 class Bank{

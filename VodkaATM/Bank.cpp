@@ -1,6 +1,4 @@
 #pragma once
-#include "Transaction.h"
-#include "BankManager.h"
 #include "Bank.h"
 
 Bank::Bank(string name) { 
@@ -86,7 +84,7 @@ string Bank::Query(Transaction* transaction) {
 	}
 	catch (string e) {
 		transaction->SetErrorMessage(e);
-		return e;
+		throw e;
 	}
 }
 	
