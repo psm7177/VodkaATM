@@ -85,28 +85,14 @@ string Language::Eng2Kor(string s) {
 	if (s == "Done") {
 		return "완료";
 	}
-	if (s == "") {
-		return "";
+	if (s == "Deposit") {
+		return "입금";
 	}
-	if (s == "") {
-		return "";
+	if (s == "Withdrawal") {
+		return "출금";
 	}
-	if (s == "") {
-		return "";
+	if (s == "Transfer") {
+		return "이체";
 	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
+	return s;
 }

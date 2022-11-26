@@ -16,7 +16,6 @@ protected:
 	string primaryBank;
 
 	int transaction_id;
-	Language* descriptor;
 	list<Transaction*> all_transactions;
 	list<Transaction*> transactions;
 	Card* insertedCard;

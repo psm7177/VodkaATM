@@ -98,14 +98,9 @@ void ATM::ShowHomepage() {
 }
 void ATM::ShowUI(string s) {
 	ClearOutput();
-	if (descriptor == nullptr) {
-		cout << GetMain(s) << endl;
-		cout << control[0] << endl;
-	}
-	else {
-		cout << GetMain(descriptor->Eng2Kor(s)) << endl;
-		cout << control[1] << endl;
-	}
+	cout << GetMain(Language::Eng2Kor(s)) << endl;
+	if (Language::onoff) cout << control[1] << endl;
+	else cout << control[0] << endl;
 }
 
 void ATM::AskLanguage() {
@@ -113,8 +108,10 @@ void ATM::AskLanguage() {
 	string answer;
 	cin >> answer;
 	if (answer == "2") {
-		Language lang = Language();
-		this->descriptor = &lang;
+		Language::onoff = true;
+	}
+	else {
+		Language::onoff = false;
 	}
 }
 
@@ -123,7 +120,6 @@ MultiATM::MultiATM(int serial, bool bilingual, string primaryBank, int initialMo
 	//this->isMulti = isMulti;
 	this->bilingual = bilingual;
 	this->primaryBank = primaryBank;
-	this->descriptor = nullptr;
 	this->transactions = list<Transaction*>();
 	this->insertedCard = nullptr;
 	this->sessionCount = 0;
@@ -137,7 +133,6 @@ SingleATM::SingleATM(int serial, bool bilingual, string primaryBank, int initial
 	this->bilingual = bilingual;
 	this->primaryBank = primaryBank;
 
-	this->descriptor = nullptr;
 	this->transactions = list<Transaction*>();
 	this->insertedCard = nullptr;
 	this->sessionCount = 0;
