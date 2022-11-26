@@ -245,8 +245,10 @@ string ATM::Transfer(Account* dest_account, int money, string message, bool isit
 		fee += 1000;
 	}
 
-	string error = Check_bills(money, isit_cash);
-	if (error == "Too many bills") return error;
+	if (dest_account != nullptr) {
+		string error = Check_bills(money, isit_cash);
+		if (error == "Too many bills") return error;
+	}
 
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);

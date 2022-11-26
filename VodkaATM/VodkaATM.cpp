@@ -42,7 +42,7 @@ int main() {
     atm1.CloseSession();
 
     atm2.InsertCard(card1);
-    atm2.Transfer(account2, 5000, "");
+    atm2.Transfer(account2, 5000, "", true);
     atm2.CloseSession();
 
     atm3.InsertCard(card2);
