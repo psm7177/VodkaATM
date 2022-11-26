@@ -36,6 +36,9 @@
     <ClCompile Include="Bank.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="BankManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Language.h">
@@ -54,6 +57,9 @@
       <Filter>Source Files</Filter>
     </ClInclude>
     <ClInclude Include="ATM.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BankManager.h">
       <Filter>Source Files</Filter>
     </ClInclude>
   </ItemGroup>

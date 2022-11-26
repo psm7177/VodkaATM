@@ -141,6 +141,7 @@
   <ItemGroup>
     <ClCompile Include="ATM.cpp" />
     <ClCompile Include="Bank.cpp" />
+    <ClCompile Include="BankManager.cpp" />
     <ClCompile Include="Language.cpp" />
     <ClCompile Include="VodkaATM.cpp" />
     <ClCompile Include="Account.cpp" />
@@ -150,6 +151,7 @@
   <ItemGroup>
     <ClInclude Include="ATM.h" />
     <ClInclude Include="Bank.h" />
+    <ClInclude Include="BankManager.h" />
     <ClInclude Include="Card.h" />
     <ClInclude Include="Language.h" />
     <ClInclude Include="Transaction.h" />

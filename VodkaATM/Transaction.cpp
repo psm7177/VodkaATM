@@ -1,10 +1,8 @@
 #pragma once
 #include "Transaction.h"
 
-int Transaction::idCount = 0;
-
-Transaction::Transaction() {
-	id = ++idCount;
+Transaction::Transaction(int id) {
+	this->id = id;
 	errorMessage = "No problem";
 }
 string Transaction::GetDeposit() {

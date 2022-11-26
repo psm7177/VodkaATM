@@ -5,7 +5,6 @@ using namespace std;
 
 class Transaction {
 private:
-	static int idCount;
 	int id;
 	string tnsType;
 	Account* myAccount;
@@ -17,7 +16,7 @@ private:
 	string GetWithdrawal();
 	string GetTransfer();
 public:
-	Transaction();
+	Transaction(int id);
 	void SetDeposit(Account* account, int value, int fee, string message);
 	void SetWithdraw(Account* account, int value, int fee, string message);
 	void SetTransfer(Account* account, Account* transferAccount, int value, int fee, string message);

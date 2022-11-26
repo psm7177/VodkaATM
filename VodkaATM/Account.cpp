@@ -1,6 +1,16 @@
 #pragma once
 #include "Account.h"
 
+Account::Account(string name, Bank* bank, int pw) {
+	this->userName = name;
+	this->accBank = bank;
+	this->accPW = pw;
+}
+
+bool Account::CheckPW(int pw) {
+	if (this->accPW == pw) return true;
+	else return false;
+}
 int Account::GetValance() {
 	return this->valance;
 }
@@ -18,14 +28,6 @@ string Account::GetAccNum() {
 }
 Bank* Account::GetAccBank() {
 	return this->accBank;
-}
-string Account::IsValid(Card* card) {
-	Account* ca = card->GetAccount();
-	if (userName != ca->userName) return "Mismatch: User Name";
-	if (accNumber != ca->accNumber) return "Mismatch: Account Number";
-	if (accBank != ca->GetAccBank()) return "Mismatch: Bank";
-	if (accPW != ca->accPW) return "Wrong Password";
-	return "Valid";
 }
 
 void Account::ChangeValance(int amount) {

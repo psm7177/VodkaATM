@@ -9,5 +9,5 @@ using namespace std;
 
 int main()
 {
-	ATM atm = ATM(123456, true, true, "Daegu", 500000);
+	SingleATM atm = SingleATM(123456, true, "Daegu", 500000);
 }

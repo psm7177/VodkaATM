@@ -1,6 +1,11 @@
 #pragma once
 #include "ATM.h"
 
+ATM::ATM() {
+	int transaction_id = 0;
+	cout << "Default ATM Instructor" << endl;
+}
+
 string ATM::control[2] = {
 	"\n\
 忙式式忖忙式式忖忙式式忖忙式式忖忙式式忖       Cash/Check Slot\n\
@@ -94,21 +99,6 @@ void ATM::ShowHomepage() {
 	}
 }
 
-ATM::ATM(int serial, bool isMulti, bool bilingual, string primaryBank, int initialMoney) {
-	this->serialNumber = serial;
-	this->isMulti = isMulti;
-	this->bilingual = bilingual;
-	this->primaryBank = primaryBank;
-
-	this->descriptor = nullptr;
-
-	this->transactions = list<Transaction>();
-	this->insertedCard = nullptr;
-	this->sessionCount = 0;
-	this->cash = initialMoney;
-
-	if (bilingual) AskLanguage();
-}
 void ATM::AskLanguage() {
 	cout << GetMain("Select language\n\n1.English\n2.и措橫") << endl;
 	string answer;
@@ -118,4 +108,131 @@ void ATM::AskLanguage() {
 		this->descriptor = &lang;
 	}
 	ShowHomepage();
+}
+
+MultiATM::MultiATM(int serial, bool bilingual, string primaryBank, int initialMoney) {
+	this->serialNumber = serial;
+	//this->isMulti = isMulti;
+	this->bilingual = bilingual;
+	this->primaryBank = primaryBank;
+	this->descriptor = nullptr;
+	this->transactions = list<Transaction*>();
+	this->insertedCard = nullptr;
+	this->sessionCount = 0;
+	this->cash = initialMoney;
+}
+
+
+SingleATM::SingleATM(int serial, bool bilingual, string primaryBank, int initialMoney) {
+	this->serialNumber = serial;
+	//this->isMulti = isMulti;
+	this->bilingual = bilingual;
+	this->primaryBank = primaryBank;
+
+	this->descriptor = nullptr;
+	this->transactions = list<Transaction*>();
+	this->insertedCard = nullptr;
+	this->sessionCount = 0;
+	this->cash = initialMoney;
+}
+
+string SingleATM::InsertCard(Card* mycard) {
+	this->insertedCard = mycard;
+	Account* myaccount = mycard->GetAccount();
+	Bank* myBank = myaccount->GetAccBank();
+	if (myBank->bankName == primaryBank) {
+		return "Card Verifyed";
+	}
+	else {
+		return "Card Rejected";
+	}
+}
+
+string MultiATM::InsertCard(Card* mycard) {
+	this->insertedCard = mycard;
+	Account* myaccount = mycard->GetAccount();
+	Bank* myBank = myaccount->GetAccBank();
+	return "Card Verifyed";
+}
+
+
+string ATM::CloseSession() {
+	//End session and show transactions
+	return "End Session";
+}
+
+string ATM::Deposit(int money, string message) {
+	int fee = 0;
+	Transaction* newtransaction = new Transaction(transaction_id);
+	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+		fee += 1000;
+	}
+	newtransaction->SetDeposit(this->insertedCard->GetAccount(), money, fee, message);
+	transaction_id++;
+	transactions.push_back(newtransaction);
+	all_transactions.push_back(newtransaction);
+	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	return error;
+}
+string ATM::Withdraw(int money, string message) {
+	int fee = 1000;
+	Transaction* newtransaction = new Transaction(transaction_id);
+	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+		fee += 1000;
+	}
+	newtransaction->SetWithdraw(this->insertedCard->GetAccount(), money, fee, message);
+	transaction_id++;
+	transactions.push_back(newtransaction);
+	all_transactions.push_back(newtransaction);
+	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	return error;
+}
+string ATM::Transfer(Account* dest_account, int money, string message) {
+	int fee = 2000;
+	Transaction* newtransaction = new Transaction(transaction_id);
+	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+		fee += 1000;
+	}
+	if (dest_account->GetAccBank()->bankName == primaryBank) {
+		fee += 1000;
+	}
+	transactions.push_back(newtransaction);
+	all_transactions.push_back(newtransaction);
+	newtransaction->SetTransfer(this->insertedCard->GetAccount(), dest_account, money, fee, message);
+	transaction_id++;
+	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	return error;
+}
+
+Card* SingleATM::IssueCard(bool isadmin, Account* newaccount) {
+	if (newaccount->GetAccBank()->bankName == this->primaryBank) {
+		Card* newcard = new Card(isadmin, newaccount);
+		return newcard;
+	}
+	else {
+		cout << "Not This ATM" << endl;
+	}
+}
+
+Card* MultiATM::IssueCard(bool isadmin, Account* newaccount) {
+	//make account
+	Card* newcard = new Card(isadmin, newaccount);
+	return newcard;
+}
+
+string ATM::TransactionHistory() {
+	return " ";
+}
+
+string ATM::RunSession() {
+	string Errormessage = "";
+	if (bilingual) AskLanguage();
+	return Errormessage;
+}
+
+string ATM::VerifyCard(int pw) {
+	if (this->insertedCard->GetAccount()->CheckPW(pw)) {
+		return "Login";
+	}
+	return "Wrong password";
 }

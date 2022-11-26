@@ -11,6 +11,7 @@ private:
 	Bank* accBank;
 	int accPW;
 public:
+	Account(string name, Bank* bank, int pw);
 	void ChangeValance(int amount);
 
 	bool CanChangeFunds(int amount);
@@ -20,5 +21,5 @@ public:
 	string GetUserName();
 	string GetAccNum();
 	Bank* GetAccBank();
-	string IsValid(Card* card);
+	bool CheckPW(int pw);
 };

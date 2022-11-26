@@ -1,6 +1,29 @@
 #pragma once
 #include "Transaction.h"
+#include "BankManager.h"
 #include "Bank.h"
+
+Bank::Bank(string name) { 
+	this->bankName = name;
+	BankManager::instance().AddBank(name, this);
+}
+
+Bank::~Bank() {
+	// delete account
+	for (auto i = this->accountMap.begin(); i != this->accountMap.end(); i++) {
+		delete i->second;
+	}
+}
+
+Account* Bank::GetAccount(string accNumber) {
+	return this->accountMap[accNumber];
+}
+
+Account* Bank::CreateAccount(string username, int pw) {
+	Account* acc = new Account(username, this, pw);
+	this->accountMap[acc->GetAccNum()] = acc;
+	return acc;
+}
 
 string Bank::Deposit(Account* account, int value, int fee) {
 	if (!account->CanChangeFunds(value - fee)) {
