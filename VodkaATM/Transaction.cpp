@@ -43,8 +43,8 @@ void Transaction::SetDeposit(Account* account, int value, int fee, string messag
 	this->fee = fee;
 	errorMessage = message;
 }
-void Transaction::SetWithdraw(Account* account, int value, int fee, string message) {
-	tnsType = "Withdraw";
+void Transaction::SetWithdrawal(Account* account, int value, int fee, string message) {
+	tnsType = "Withdrawal";
 	myAccount = account;
 	this->value = value;
 	this->fee = fee;
@@ -60,7 +60,7 @@ void Transaction::SetTransfer(Account* account, Account* transferAccount, int va
 }
 string Transaction::GetInfo() {
 	if (tnsType == "Deposit") return GetDeposit();
-	if (tnsType == "Withdraw") return GetWithdrawal();
+	if (tnsType == "Withdrawal") return GetWithdrawal();
 	if (tnsType == "Transfer") return GetTransfer();
 }
 

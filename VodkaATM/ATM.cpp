@@ -179,7 +179,7 @@ string ATM::Deposit(int money, string message, bool isit_cash) {
 	return error;
 }
 
-string ATM::Withdraw(int money, string message) {
+string ATM::Withdrawal(int money, string message) {
 	if (this->cash < money) {
 		return "low money error";
 	}
@@ -189,7 +189,7 @@ string ATM::Withdraw(int money, string message) {
 	if (!isPrimary()) {
 		fee += 1000;
 	}
-	newtransaction->SetWithdraw(this->insertedCard->GetAccount(), money, fee, message);
+	newtransaction->SetWithdrawal(this->insertedCard->GetAccount(), money, fee, message);
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
@@ -202,7 +202,7 @@ string ATM::Transfer(Account* dest_account, int money, string message) {
 	if (!isPrimary()) {
 		fee += 1000;
 	}
-	if (dest_account->GetAccBank()->bankName == primaryBank) {
+	if (dest_account->GetAccBank()->bankName != primaryBank) {
 		fee += 1000;
 	}
 	transactions.push_back(newtransaction);

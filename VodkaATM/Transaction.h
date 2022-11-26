@@ -18,7 +18,7 @@ private:
 public:
 	Transaction(int id);
 	void SetDeposit(Account* account, int value, int fee, string message);
-	void SetWithdraw(Account* account, int value, int fee, string message);
+	void SetWithdrawal(Account* account, int value, int fee, string message);
 	void SetTransfer(Account* account, Account* transferAccount, int value, int fee, string message);
 	string GetInfo();
 	string GetType();

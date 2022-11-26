@@ -39,7 +39,7 @@ public:
 	string CloseSession(); // Session ends
 	string VerifyCard(int pw); // Verify Card with password
 	string Deposit(int money, string message, bool isit_cash); // Deposit cash, make transaction
-	string Withdraw(int money, string message); // Withdraw cash, make transaction
+	string Withdrawal(int money, string message); // Withdraw cash, make transaction
 	string Transfer(Account* dest_account, int money, string message); // Transfer cash, maake transaction
 	//virtual Card* IssueCard(string bankname, string accnum); // make card
 	string GetTransactionHistory(bool isAdmin); // Show Transaction History
