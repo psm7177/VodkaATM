@@ -21,7 +21,12 @@ Account* Bank::GetAccount(string accNumber) {
 
 Account* Bank::CreateAccount(string username, int pw, const char* accountNumber, int valance) {
 	Account* acc = new Account(username, this, pw, accountNumber, valance);
-	this->accountMap[acc->GetAccNum()] = acc;
+	string accNum = acc->GetAccNum();
+	if (this->accountMap.find(accNum) != this->accountMap.end()) {
+		delete	acc;
+		throw "exist same account number in " + this->bankName;
+	}
+	this->accountMap[accNum] = acc;
 	return acc;
 }
 
