@@ -15,8 +15,8 @@ int main() {
     //Card Insert 하기
     atm1.InsertCard(card1);
     //송금, 출금, 등등
-    atm1.Deposit(1000, string(""));
-    atm1.Withdraw(2000, string(""));
+    atm1.Deposit(1000, string(""), true);
+    atm1.Withdrawal(2000, string(""));
     atm1.Transfer(account2, 5000, string(""));
     //Session end 하기
     atm1.CloseSession();

@@ -161,11 +161,14 @@ string ATM::CloseSession() {
 	return "End Session";
 }
 
-string ATM::Deposit(int money, string message) {
+string ATM::Deposit(int money, string message, bool isit_cash) {
 	int fee = 0;
 	Transaction* newtransaction = new Transaction(transaction_id);
-	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+	if (this->insertedCard->GetAccount()->GetAccBank()->bankName != primaryBank) {
 		fee += 1000;
+	}
+	if (isit_cash) {
+		this->cash += money;
 	}
 	newtransaction->SetDeposit(this->insertedCard->GetAccount(), money, fee, message);
 	transaction_id++;
@@ -174,13 +177,18 @@ string ATM::Deposit(int money, string message) {
 	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
-string ATM::Withdraw(int money, string message) {
+
+string ATM::Withdrawal(int money, string message) {
+	if (this->cash < money) {
+		return "low money error";
+	}
+	this->cash -= money;
 	int fee = 1000;
 	Transaction* newtransaction = new Transaction(transaction_id);
-	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+	if (this->insertedCard->GetAccount()->GetAccBank()->bankName != primaryBank) {
 		fee += 1000;
 	}
-	newtransaction->SetWithdraw(this->insertedCard->GetAccount(), money, fee, message);
+	newtransaction->SetWithdrawal(this->insertedCard->GetAccount(), money, fee, message);
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
@@ -190,10 +198,10 @@ string ATM::Withdraw(int money, string message) {
 string ATM::Transfer(Account* dest_account, int money, string message) {
 	int fee = 2000;
 	Transaction* newtransaction = new Transaction(transaction_id);
-	if (this->insertedCard->GetAccount()->GetAccBank()->bankName == primaryBank) {
+	if (this->insertedCard->GetAccount()->GetAccBank()->bankName != primaryBank) {
 		fee += 1000;
 	}
-	if (dest_account->GetAccBank()->bankName == primaryBank) {
+	if (dest_account->GetAccBank()->bankName != primaryBank) {
 		fee += 1000;
 	}
 	transactions.push_back(newtransaction);

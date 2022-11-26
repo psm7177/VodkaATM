@@ -38,7 +38,7 @@ void Bank::Withdrawal(Account* account, int value, int fee) {
 		throw "error"; // TODO: Write error Message
 	}
 
-	account->ChangeValance(value - fee);
+	account->ChangeValance(-value - fee);
 }
 
 void Bank::Transfer(Account* fromAccount, Account* toAccount, int value, int fee) {
