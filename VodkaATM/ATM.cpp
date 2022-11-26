@@ -162,6 +162,8 @@ string MultiATM::InsertCard(Card* mycard) {
 
 
 string ATM::CloseSession() {
+	this->transactions = list<Transaction*>();
+	this->insertedCard = nullptr;
 	//End session and show transactions
 	return "End Session";
 }
