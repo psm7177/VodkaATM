@@ -38,6 +38,7 @@ int main() {
 
     atm1.InsertCard(card1);
     atm1.Deposit(1000, "", true);
+    atm1.ShowTransactionHistory(false);
     atm1.CloseSession();
 
     atm2.InsertCard(card1);
