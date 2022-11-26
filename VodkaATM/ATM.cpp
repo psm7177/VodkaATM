@@ -319,7 +319,7 @@ string ATM::RunAdminSession(string& input) {
 		{
 		case 1:
 			ShowTransactionHistory(this->insertedCard->isAdmin);
-			ShowUI("Get printed output.txt.\n Press any key to continue.");
+			ShowUI("Get printed output.txt.\nPress any key to continue.");
 			cin >> input;
 			break;
 		case 2:
@@ -416,7 +416,7 @@ string ATM::RunSession() {
 			ShowUI(e);
 			return CloseSession();
 		}
-		ShowUI(message + "\n1. Next transaction\n2. Exit");
+		ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
 		cin >> input;
 		if (input == "Cancel") return CloseSession();
 		if (stoi(input) == 2) break;
