@@ -1,7 +1,7 @@
 #include "BankManager.h"
 BankManager* BankManager ::instance_ = nullptr;
 
-BankManager& BankManager::instance(){
+BankManager BankManager::instance(){
     if (instance_ == nullptr) {
         instance_ = new BankManager();
     }

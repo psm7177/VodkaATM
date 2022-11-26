@@ -58,36 +58,6 @@ string Language::Eng2Kor(string s) {
 	if (s == "1. Print receipt\n2. Do not") {
 		return "1. 명세서 출력\n2. 출력하지 않음";
 	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
-	if (s == "") {
-		return "";
-	}
 	if (s == "Transaction ID: ") {
 		return "거래 아이디: ";
 	}
@@ -96,5 +66,47 @@ string Language::Eng2Kor(string s) {
 	}
 	if (s == "Transaction ID: ") {
 		return "거래 아이디: ";
+	}
+	if (s == "exist same account number in ") {
+		return "똑같은 계좌 번호가 존재합니다.";
+	}
+	if (s == "low money error") {
+		return "ATM 잔액이 부족합니다.";
+	}
+	if (s == "low money error in ") {
+		return "계좌 잔액이 너무 낮습니다.";
+	}
+	if (s == "Well done") {
+		return "올바르게 시행되었습니다.";
+	}
+	if (s == "Not enough valance") {
+		return "잔액이 부족합니다";
+	}
+	if (s == "Done") {
+		return "완료";
+	}
+	if (s == "") {
+		return "";
+	}
+	if (s == "") {
+		return "";
+	}
+	if (s == "") {
+		return "";
+	}
+	if (s == "") {
+		return "";
+	}
+	if (s == "") {
+		return "";
+	}
+	if (s == "") {
+		return "";
+	}
+	if (s == "") {
+		return "";
+	}
+	if (s == "") {
+		return "";
 	}
 }

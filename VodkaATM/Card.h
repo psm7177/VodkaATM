@@ -1,5 +1,6 @@
 #pragma once
 class Account;
+#include "Language.h"
 using namespace std;
 
 class Card {

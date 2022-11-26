@@ -27,9 +27,9 @@ int Account::GetValance() {
 }
 string Account::AddValance(int value) {
 	int tmp = valance + value;
-	if (tmp < 0) return string("Not enough valance");
+	if (tmp < 0) return string(Language::Eng2Kor("Not enough valance"));
 	valance = tmp;
-	return string("Done");
+	return string(Language::Eng2Kor("Done"));
 }
 string Account::GetUserName() {
 	return this->userName;
