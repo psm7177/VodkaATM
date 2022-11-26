@@ -22,6 +22,8 @@ protected:
 	int sessionCount;
 	int cash;
 
+	bool isPrimary();
+
 	static string control[2];
 	void ClearOutput();
 	string GetMain(string s);
@@ -40,7 +42,8 @@ public:
 	string Withdrawal(int money, string message); // Withdraw cash, make transaction
 	string Transfer(Account* dest_account, int money, string message); // Transfer cash, maake transaction
 	//virtual Card* IssueCard(string bankname, string accnum); // make card
-	string TransactionHistory(); // Show Transaction History
+	string GetTransactionHistory(bool isAdmin); // Show Transaction History
+	void ShowTransactionHistory(bool isAdmin);
 };
 
 class MultiATM : public ATM {

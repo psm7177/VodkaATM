@@ -26,19 +26,21 @@ Account* Bank::CreateAccount(string username, int pw, const char* accountNumber,
 }
 
 void Bank::Deposit(Account* account, int value, int fee) {
-	if (!account->CanChangeFunds(value - fee)) {
+	int amount = value - fee;
+	if (!account->CanChangeFunds(amount)) {
 		throw "error"; // TODO: Write error Message
 	}
 
-	account->ChangeValance(value - fee);
+	account->ChangeValance(amount);
 }
 
 void Bank::Withdrawal(Account* account, int value, int fee) {
-	if (!account->CanChangeFunds(-value - fee)) {
+	int amount = -value - fee;
+	if (!account->CanChangeFunds(amount)) {
 		throw "error"; // TODO: Write error Message
 	}
 
-	account->ChangeValance(-value - fee);
+	account->ChangeValance(amount);
 }
 
 void Bank::Transfer(Account* fromAccount, Account* toAccount, int value, int fee) {
@@ -61,7 +63,7 @@ string Bank::Query(Transaction* transaction) {
 		if (type == "Deposit") {
 			this->Deposit(myAccount, transaction->GetValue(), fee);
 		}
-		else if (type == "Withdrawal") {
+		else if (type == "Withdraw") {
 			this->Withdrawal(myAccount, transaction->GetValue(), fee);
 		}
 		else if (type == "Transfer") {
