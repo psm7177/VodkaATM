@@ -58,6 +58,7 @@ int main() {
     SingleATM atm1 = SingleATM(111111, true, "Kakao", 50000);
     //Card 생성
     Card* card1 = atm1.IssueCard(false, account1);
+    Card* card2 = atm1.IssueCard(true, account2);
     //Card Insert 하기
     while (true) {
         atm1.RunSession();

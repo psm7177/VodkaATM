@@ -48,6 +48,7 @@ public:
 	string GetTransactionHistory(bool isAdmin); // Show Transaction History
 	void ShowTransactionHistory(bool isAdmin);
 	string RunSession(); // return error message, session start
+	string RunAdminSession(string& input);
 };
 
 class MultiATM : public ATM {

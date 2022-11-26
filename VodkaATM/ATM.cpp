@@ -309,6 +309,26 @@ void ATM::ShowTransactionHistory(bool isAdmin) {
 
 }
 
+string ATM::RunAdminSession(string& input) {
+	while (true)
+	{
+		ShowUI("1. Print Transaction History.\n2. Exit");
+		cin >> input;
+		if (input == "Cancel") return CloseSession();
+		switch (stoi(input))
+		{
+		case 1:
+			ShowTransactionHistory(this->insertedCard->isAdmin);
+			ShowUI("Get printed output.txt.\n Press any key to continue.");
+			cin >> input;
+			break;
+		case 2:
+			return CloseSession();
+			break;
+		}
+	}
+}
+
 string ATM::RunSession() {
 	if (bilingual) AskLanguage();
 	ShowHomepage();
@@ -321,7 +341,9 @@ string ATM::RunSession() {
 	catch (...) {
 		ShowUI("Not valid card");
 	}
-
+	if (this->insertedCard->isAdmin) {
+		return RunAdminSession(input);
+	}
 	ShowUI("Input your password");
 	for (int i = 0; i < 3; ++i) {
 		cin >> input;
@@ -333,7 +355,6 @@ string ATM::RunSession() {
 			ShowUI("Wrong password " + to_string(i + 1) + "/3");
 		}
 	}
-
 	for (int i = 0; i < 3; ++i) {
 		string transfer_type;
 		string money;
