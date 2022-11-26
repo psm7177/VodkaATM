@@ -232,7 +232,7 @@ string ATM::Withdrawal(int money, string message) {
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
-	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
 string ATM::Transfer(Account* dest_account, int money, string message, bool isit_cash) {
@@ -245,8 +245,9 @@ string ATM::Transfer(Account* dest_account, int money, string message, bool isit
 		fee += 1000;
 	}
 
+	string error;
 	if (dest_account != nullptr) {
-		string error = Check_bills(money, isit_cash);
+		error = Check_bills(money, isit_cash);
 		if (error == "Too many bills") return error;
 	}
 
@@ -254,7 +255,7 @@ string ATM::Transfer(Account* dest_account, int money, string message, bool isit
 	all_transactions.push_back(newtransaction);
 	newtransaction->SetTransfer(this->insertedCard->GetAccount(), dest_account, money, fee, message);
 	transaction_id++;
-	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
 	return error;
 }
 
