@@ -19,8 +19,8 @@ Account* Bank::GetAccount(string accNumber) {
 	return this->accountMap[accNumber];
 }
 
-Account* Bank::CreateAccount(string username, int pw) {
-	Account* acc = new Account(username, this, pw);
+Account* Bank::CreateAccount(string username, int pw, const char* accountNumber, int valance) {
+	Account* acc = new Account(username, this, pw, &string(accountNumber), valance);
 	this->accountMap[acc->GetAccNum()] = acc;
 	return acc;
 }

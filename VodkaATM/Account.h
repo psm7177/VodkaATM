@@ -7,11 +7,12 @@ class Account {
 private:
 	int valance;
 	string userName;
+	static int accNumberCount;
 	string accNumber;
 	Bank* accBank;
 	int accPW;
 public:
-	Account(string name, Bank* bank, int pw);
+	Account(string name, Bank* bank, int pw, string* accountNumber = nullptr, int valance = 0);
 	void ChangeValance(int amount);
 
 	bool CanChangeFunds(int amount);
