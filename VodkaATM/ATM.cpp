@@ -385,9 +385,13 @@ string ATM::RunSession() {
 				break;
 			case 3:
 				string sbank_name;
-				string sacc_name;
+				string sacc_num;
 				ShowUI("Input source bank name");
-
+				cin >> sbank_name;
+				if (sbank_name == "Cancel") return CloseSession();
+				ShowUI("Input source account number");
+				cin >> sacc_num;
+				if (sacc_num == "Cancel") return CloseSession();
 				string bank_name;
 				string acc_num;
 				ShowUI("Input bank name to transfer");
@@ -401,7 +405,7 @@ string ATM::RunSession() {
 						stoi(money), "", is_cash);
 				}
 				else {
-					message = Transfer(this->insertedCard->GetAccount(), \
+					message = Transfer(BankManager::instance().GetBank(sbank_name)->GetAccount(sacc_num), \
 						BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", is_cash);
 				}
@@ -415,7 +419,16 @@ string ATM::RunSession() {
 		ShowUI(message + "\n1. Next transaction\n2. Exit");
 		cin >> input;
 		if (input == "Cancel") return CloseSession();
-		if (stoi(input) == 2) return CloseSession();
+		if (stoi(input) == 2) break;
+	}
+	ShowUI("1. Print receipt\n2. Do not");
+	cin >> input;
+	if (input == "Cancel") return CloseSession();
+	if (stoi(input) == 1) {
+		string history = this->GetTransactionHistory(this->insertedCard->isAdmin);
+		ofstream fout("output.txt");
+		fout << history << endl;
+		fout.close();
 	}
 	return CloseSession();
 }
