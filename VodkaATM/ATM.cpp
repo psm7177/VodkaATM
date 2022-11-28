@@ -346,7 +346,11 @@ string ATM::RunSession() {
 		string message = VerifyCard(stoi(input));
 		if (message == "Login") break;
 		else {
-			if (i == 2) return CloseSession();
+			if (i == 2) { 
+				ShowUI("Wrong password " + to_string(i + 1) + "/3 \nLimit exceeded. \nPress any key.");
+				cin >> input;
+				return CloseSession(); 
+			}
 			ShowUI("Wrong password " + to_string(i + 1) + "/3");
 		}
 	}
