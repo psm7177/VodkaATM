@@ -332,12 +332,7 @@ string ATM::RunSession() {
 	cin >> input;
 	if (input == "Cancel") return CloseSession();
 	else {
-		try {
-			InsertCard(allCard[stoi(input)]);
-		}
-		catch (...) {
-			ShowUI("Not valid card");
-		}
+		if (InsertCard(allCard[stoi(input)]) != "Card Verifyed") return CloseSession();
 		if (this->insertedCard->isAdmin) {
 			return RunAdminSession(input);
 		}
