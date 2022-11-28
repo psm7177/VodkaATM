@@ -172,24 +172,24 @@ void Check_bills(int money, bool isit_cash) {
 	int limit;
 	if (isit_cash) limit = 50;
 	else limit = 30;
-	while (money > 50000) {
+	while (money >= 50000) {
 		money -= 50000;
 		++count;
 	}
-	while (money > 10000) {
+	while (money >= 10000) {
 		money -= 10000;
 		++count;
 	}
-	while (money > 5000) {
+	while (money >= 5000) {
 		money -= 5000;
 		++count;
 	}
-	while (money > 1000) {
+	while (money >= 1000) {
 		money -= 1000;
 		++count;
 	}
-	if (money != 0) throw string("This amount is not supported");
-	if (count > limit) throw string("Too many bills");
+	if (money != 0) throw string("This amount is not supported\nPress any key to continue");
+	if (count > limit) throw string("Too many bills\nPress any key to continue");
 }
 
 string ATM::Deposit(int money, string message, bool isit_cash) {
@@ -298,7 +298,7 @@ void ATM::ShowTransactionHistory(bool isAdmin) {
 		fout.close();
 	}
 	else {
-		ShowUI(history + "\nPress any key to continue");
+		ShowUI(history + Language::Eng2Kor("\nPress any key to continue"));
 		string asdf;
 		cin >> asdf;
 	}
@@ -414,6 +414,7 @@ string ATM::RunSession() {
 		}
 		catch (string e) {
 			ShowUI(e);
+			cin >> input;
 			return CloseSession();
 		}
 		ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));

@@ -101,8 +101,14 @@ string Language::Eng2Kor(string s) {
 	if (s == "Transfer") {
 		return "이체";
 	}
-	if (s == "This amount is not supported") {
-		return "지원하지 않는 금액입니다";
+	if (s == "This amount is not supported\nPress any key to continue") {
+		return "지원하지 않는 금액입니다\n아무 키를 눌러 계속";
+	}
+	if (s == "Too many bills\nPress any key to continue") {
+		return "지폐 수가 너무 많습니다\n아무 키를 눌러 계속";
+	}
+	if (s == "\nPress any key to continue") {
+		return "\n아무 키를 눌러 계속";
 	}
 	return s;
 }
