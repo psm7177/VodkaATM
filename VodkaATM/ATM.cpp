@@ -160,7 +160,7 @@ string MultiATM::InsertCard(Card* mycard) {
 
 
 string ATM::CloseSession() {
-	ShowTransactionHistory(this->insertedCard->isAdmin);
+	if(this->insertedCard != nullptr) ShowTransactionHistory(this->insertedCard->isAdmin);
 	this->transactions = list<Transaction*>();
 	this->insertedCard = nullptr;
 	//End session and show transactions
@@ -331,107 +331,109 @@ string ATM::RunSession() {
 	string input;
 	cin >> input;
 	if (input == "Cancel") return CloseSession();
-	try {
-		InsertCard(allCard[stoi(input)]);
-	}
-	catch (...) {
-		ShowUI("Not valid card");
-	}
-	if (this->insertedCard->isAdmin) {
-		return RunAdminSession(input);
-	}
-	ShowUI("Input your password");
-	for (int i = 0; i < 3; ++i) {
-		cin >> input;
-		if (input == "Cancel") return CloseSession();
-		string message = VerifyCard(stoi(input));
-		if (message == "Login") break;
-		else {
-			if (i == 2) { 
-				ShowUI("Wrong password " + to_string(i + 1) + "/3 \nLimit exceeded. \nPress any key.");
-				cin >> input;
-				return CloseSession(); 
-			}
-			ShowUI("Wrong password " + to_string(i + 1) + "/3");
-		}
-	}
-	for (int i = 0; i < 3; ++i) {
-		string transfer_type;
-		string money;
-		string input2;
-		ShowUI("1. Deposit\n2. Withdrawal\n3. Transfer");
-		cin >> input;
-		if (input == "Cancel") return CloseSession();
-		if (stoi(input) == 3) {
-			ShowUI("1. Cash Transfer\n2. Account Transfer");
-			cin >> transfer_type;
-			if (transfer_type == "Cancel") return CloseSession();
-		}
-		ShowUI("1. Cash\n2. Check");
-		cin >> input2;
-		if (input2 == "Cancel") return CloseSession();
-		bool is_cash = stoi(input2) == 1 ? true : false;
-		ShowUI("Amount of Money");
-		cin >> money;
-		if (money == "Cancel") return CloseSession();
-		string message;
+	else {
 		try {
-			switch (stoi(input)) {
-			case 1:
-				message = Deposit(stoi(money), "", is_cash);
-				break;
-			case 2:
-				message = Withdrawal(stoi(money), "");
-				break;
-			case 3:
-				string sbank_name;
-				string sacc_num;
-				ShowUI("Input source bank name");
-				cin >> sbank_name;
-				if (sbank_name == "Cancel") return CloseSession();
-				ShowUI("Input source account number");
-				cin >> sacc_num;
-				if (sacc_num == "Cancel") return CloseSession();
-				string bank_name;
-				string acc_num;
-				ShowUI("Input bank name to transfer");
-				cin >> bank_name;
-				if (bank_name == "Cancel") return CloseSession();
-				ShowUI("Input account number to tranfer");
-				cin >> acc_num;
-				if (acc_num == "Cancel") return CloseSession();
-				if (stoi(transfer_type) == 1) {
-					message = Transfer(BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
-						stoi(money), "", is_cash);
+			InsertCard(allCard[stoi(input)]);
+		}
+		catch (...) {
+			ShowUI("Not valid card");
+		}
+		if (this->insertedCard->isAdmin) {
+			return RunAdminSession(input);
+		}
+		ShowUI("Input your password");
+		for (int i = 0; i < 3; ++i) {
+			cin >> input;
+			if (input == "Cancel") return CloseSession();
+			string message = VerifyCard(stoi(input));
+			if (message == "Login") break;
+			else {
+				if (i == 2) {
+					ShowUI("Wrong password " + to_string(i + 1) + "/3 \nLimit exceeded. \nPress any key.");
+					cin >> input;
+					return CloseSession();
 				}
-				else {
-					message = Transfer(BankManager::instance().GetBank(sbank_name)->GetAccount(sacc_num), \
-						BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
-						stoi(money), "", is_cash);
-				}
-				break;
+				ShowUI("Wrong password " + to_string(i + 1) + "/3");
 			}
 		}
-		catch (string e) {
-			ShowUI(e);
+		for (int i = 0; i < 3; ++i) {
+			string transfer_type;
+			string money;
+			string input2;
+			ShowUI("1. Deposit\n2. Withdrawal\n3. Transfer");
 			cin >> input;
-			return CloseSession();
+			if (input == "Cancel") return CloseSession();
+			if (stoi(input) == 3) {
+				ShowUI("1. Cash Transfer\n2. Account Transfer");
+				cin >> transfer_type;
+				if (transfer_type == "Cancel") return CloseSession();
+			}
+			ShowUI("1. Cash\n2. Check");
+			cin >> input2;
+			if (input2 == "Cancel") return CloseSession();
+			bool is_cash = stoi(input2) == 1 ? true : false;
+			ShowUI("Amount of Money");
+			cin >> money;
+			if (money == "Cancel") return CloseSession();
+			string message;
+			try {
+				switch (stoi(input)) {
+				case 1:
+					message = Deposit(stoi(money), "", is_cash);
+					break;
+				case 2:
+					message = Withdrawal(stoi(money), "");
+					break;
+				case 3:
+					string sbank_name;
+					string sacc_num;
+					ShowUI("Input source bank name");
+					cin >> sbank_name;
+					if (sbank_name == "Cancel") return CloseSession();
+					ShowUI("Input source account number");
+					cin >> sacc_num;
+					if (sacc_num == "Cancel") return CloseSession();
+					string bank_name;
+					string acc_num;
+					ShowUI("Input bank name to transfer");
+					cin >> bank_name;
+					if (bank_name == "Cancel") return CloseSession();
+					ShowUI("Input account number to tranfer");
+					cin >> acc_num;
+					if (acc_num == "Cancel") return CloseSession();
+					if (stoi(transfer_type) == 1) {
+						message = Transfer(BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
+							stoi(money), "", is_cash);
+					}
+					else {
+						message = Transfer(BankManager::instance().GetBank(sbank_name)->GetAccount(sacc_num), \
+							BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
+							stoi(money), "", is_cash);
+					}
+					break;
+				}
+			}
+			catch (string e) {
+				ShowUI(e);
+				cin >> input;
+				return CloseSession();
+			}
+			ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
+			cin >> input;
+			if (input == "Cancel") return CloseSession();
+			if (stoi(input) == 2) break;
 		}
-		ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
+		ShowUI("1. Print receipt\n2. Do not");
 		cin >> input;
 		if (input == "Cancel") return CloseSession();
-		if (stoi(input) == 2) break;
+		if (stoi(input) == 1) {
+			string history = this->GetTransactionHistory(this->insertedCard->isAdmin);
+			ofstream fout("output.txt");
+			fout << history << endl;
+			fout.close();
+		}
+		return CloseSession();
 	}
-	ShowUI("1. Print receipt\n2. Do not");
-	cin >> input;
-	if (input == "Cancel") return CloseSession();
-	if (stoi(input) == 1) {
-		string history = this->GetTransactionHistory(this->insertedCard->isAdmin);
-		ofstream fout("output.txt");
-		fout << history << endl;
-		fout.close();
-	}
-	return CloseSession();
 }
 
 string ATM::VerifyCard(int pw) {
