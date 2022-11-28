@@ -373,6 +373,7 @@ string ATM::RunSession() {
 			if (input2 == "Cancel") return CloseSession();
 			bool is_cash = stoi(input2) == 1 ? true : false;
 			ShowUI("Amount of Money");
+			cin >> money;
 			string message;
 			try {
 				switch (stoi(input)) {
