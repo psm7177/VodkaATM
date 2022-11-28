@@ -94,5 +94,8 @@ string Language::Eng2Kor(string s) {
 	if (s == "Transfer") {
 		return "이체";
 	}
+	if (s == "This amount is not supported") {
+		return "지원하지 않는 금액입니다";
+	}
 	return s;
 }

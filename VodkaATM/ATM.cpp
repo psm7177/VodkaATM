@@ -188,7 +188,8 @@ void Check_bills(int money, bool isit_cash) {
 		money -= 1000;
 		++count;
 	}
-	if (count > limit) throw "Too many bills";
+	if (money != 0) throw string("This amount is not supported");
+	if (count > limit) throw string("Too many bills");
 }
 
 string ATM::Deposit(int money, string message, bool isit_cash) {
