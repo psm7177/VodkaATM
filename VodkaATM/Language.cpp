@@ -14,7 +14,10 @@ string Language::Eng2Kor(string s) {
 		return "1. 거래 기록 출력\n2. 거래 중지";
 	}
 	if (s == "Get printed output.txt.\nPress any key to continue.") {
-		return "output.txt 출력 완료\n아무 키를 눌려 계속";
+		return "output.txt 출력 완료\n아무 키를 눌러 계속";
+	}
+	if (s == "Press any key to continue") {
+		return "아무 키를 눌러 계속";
 	}
 	if (s == "Not valid card") {
 		return "등록되지 않은 카드입니다";
@@ -28,6 +31,10 @@ string Language::Eng2Kor(string s) {
 	if (s == "Wrong password 2/3") {
 		return "잘못된 비밀번호 2/3";
 	}
+	if (s == "Wrong password 3/3 \nLimit exceeded. \nPress any key.") {
+		return "잘못된 비밀번호 3/3 \n한도를 초과하였습니다.\n아무 키를 입력하세요.";
+	}
+	
 	if (s == "1. Deposit\n2. Withdrawal\n3. Transfer") {
 		return "1. 입금\n2. 출금\n3. 이체";
 	}
