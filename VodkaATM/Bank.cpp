@@ -3,7 +3,7 @@
 
 Bank::Bank(string name) {
     this->bankName = name;
-    BankManager::instance().AddBank(name, this);
+    BankManager::instance()->AddBank(name, this);
 }
 
 Bank::~Bank() {

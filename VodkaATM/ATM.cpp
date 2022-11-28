@@ -400,12 +400,12 @@ string ATM::RunSession() {
 				cin >> acc_num;
 				if (acc_num == "Cancel") return CloseSession();
 				if (stoi(transfer_type) == 1) {
-					message = Transfer(BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
+					message = Transfer(BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", is_cash);
 				}
 				else {
-					message = Transfer(BankManager::instance().GetBank(sbank_name)->GetAccount(sacc_num), \
-						BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
+					message = Transfer(BankManager::instance()->GetBank(sbank_name)->GetAccount(sacc_num), \
+						BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", is_cash);
 				}
 				break;
