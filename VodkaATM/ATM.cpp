@@ -172,23 +172,24 @@ void Check_bills(int money, bool isit_cash) {
 	int limit;
 	if (isit_cash) limit = 50;
 	else limit = 30;
-	while (money > 50000) {
+	while (money >= 50000) {
 		money -= 50000;
 		++count;
 	}
-	while (money > 10000) {
+	while (money >= 10000) {
 		money -= 10000;
 		++count;
 	}
-	while (money > 5000) {
+	while (money >= 5000) {
 		money -= 5000;
 		++count;
 	}
-	while (money > 1000) {
+	while (money >= 1000) {
 		money -= 1000;
 		++count;
 	}
-	if (count > limit) throw "Too many bills";
+	if (money != 0) throw string("This amount is not supported\nPress any key to continue");
+	if (count > limit) throw string("Too many bills\nPress any key to continue");
 }
 
 string ATM::Deposit(int money, string message, bool isit_cash) {
@@ -297,7 +298,7 @@ void ATM::ShowTransactionHistory(bool isAdmin) {
 		fout.close();
 	}
 	else {
-		ShowUI(history + "\nPress any key to continue");
+		ShowUI(history + Language::Eng2Kor("\nPress any key to continue"));
 		string asdf;
 		cin >> asdf;
 	}
@@ -305,13 +306,11 @@ void ATM::ShowTransactionHistory(bool isAdmin) {
 }
 
 string ATM::RunAdminSession(string& input) {
-	while (true)
-	{
+	while (true) {
 		ShowUI("1. Print Transaction History.\n2. Exit");
 		cin >> input;
 		if (input == "Cancel") return CloseSession();
-		switch (stoi(input))
-		{
+		switch (stoi(input)) {
 		case 1:
 			ShowTransactionHistory(this->insertedCard->isAdmin);
 			ShowUI("Get printed output.txt.\nPress any key to continue.");
@@ -331,9 +330,10 @@ string ATM::RunSession() {
 	cin >> input;
 	if (input == "Cancel") return CloseSession();
 	try {
-		InsertCard(allCard[stoi(input)]);
+		if (InsertCard(allCard[stoi(input)]) != "Card Verifyed") return CloseSession();
 	}
 	catch (...) {
+		if (input == "Cancel") return CloseSession();
 		ShowUI("Not valid card");
 	}
 	if (this->insertedCard->isAdmin) {
@@ -346,10 +346,10 @@ string ATM::RunSession() {
 		string message = VerifyCard(stoi(input));
 		if (message == "Login") break;
 		else {
-			if (i == 2) { 
+			if (i == 2) {
 				ShowUI("Wrong password " + to_string(i + 1) + "/3 \nLimit exceeded. \nPress any key.");
 				cin >> input;
-				return CloseSession(); 
+				return CloseSession();
 			}
 			ShowUI("Wrong password " + to_string(i + 1) + "/3");
 		}
@@ -366,31 +366,41 @@ string ATM::RunSession() {
 			cin >> transfer_type;
 			if (transfer_type == "Cancel") return CloseSession();
 		}
-		ShowUI("1. Cash\n2. Check");
-		cin >> input2;
-		if (input2 == "Cancel") return CloseSession();
-		bool is_cash = stoi(input2) == 1 ? true : false;
-		ShowUI("Amount of Money");
-		cin >> money;
-		if (money == "Cancel") return CloseSession();
-		string message;
-		try {
-			switch (stoi(input)) {
-			case 1:
-				message = Deposit(stoi(money), "", is_cash);
-				break;
-			case 2:
-				message = Withdrawal(stoi(money), "");
-				break;
-			case 3:
-				string sbank_name;
-				string sacc_num;
-				ShowUI("Input source bank name");
-				cin >> sbank_name;
-				if (sbank_name == "Cancel") return CloseSession();
-				ShowUI("Input source account number");
-				cin >> sacc_num;
-				if (sacc_num == "Cancel") return CloseSession();
+
+		if (input != "3") {
+			ShowUI("1. Cash\n2. Check");
+			cin >> input2;
+			if (input2 == "Cancel") return CloseSession();
+			bool is_cash = stoi(input2) == 1 ? true : false;
+			ShowUI("Amount of Money");
+			cin >> money;
+			string message;
+			try {
+				switch (stoi(input)) {
+				case 1:
+					message = Deposit(stoi(money), "", is_cash);
+					break;
+				case 2:
+					message = Withdrawal(stoi(money), "");
+					break;
+				}
+			}
+			catch (string e) {
+				ShowUI(e);
+				cin >> input;
+				return CloseSession();
+			}
+			ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
+			cin >> input;
+			if (input == "Cancel") return CloseSession();
+			if (stoi(input) == 2) break;
+		}
+		else {
+			ShowUI("Amount of Money");
+			cin >> money;
+			if (money == "Cancel") return CloseSession();
+			string message;
+			try {
 				string bank_name;
 				string acc_num;
 				ShowUI("Input bank name to transfer");
@@ -400,25 +410,30 @@ string ATM::RunSession() {
 				cin >> acc_num;
 				if (acc_num == "Cancel") return CloseSession();
 				if (stoi(transfer_type) == 1) {
+					ShowUI("1. Cash\n2. Check");
+					cin >> input2;
+					if (input2 == "Cancel") return CloseSession();
+					bool is_cash = stoi(input2) == 1 ? true : false;
 					message = Transfer(BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", is_cash);
 				}
 				else {
 					message = Transfer(BankManager::instance()->GetBank(sbank_name)->GetAccount(sacc_num), \
 						BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
-						stoi(money), "", is_cash);
+						stoi(money), "", false);
 				}
 				break;
 			}
+			catch (string e) {
+				ShowUI(e);
+				cin >> input;
+				return CloseSession();
+			}
+			ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
+			cin >> input;
+			if (input == "Cancel") return CloseSession();
+			if (stoi(input) == 2) break;
 		}
-		catch (string e) {
-			ShowUI(e);
-			return CloseSession();
-		}
-		ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
-		cin >> input;
-		if (input == "Cancel") return CloseSession();
-		if (stoi(input) == 2) break;
 	}
 	ShowUI("1. Print receipt\n2. Do not");
 	cin >> input;
