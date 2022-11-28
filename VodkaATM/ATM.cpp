@@ -413,7 +413,6 @@ string ATM::RunSession() {
 					cin >> input2;
 					if (input2 == "Cancel") return CloseSession();
 					bool is_cash = stoi(input2) == 1 ? true : false;
-					ShowUI("Amount of Money");
 					message = Transfer(BankManager::instance().GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", is_cash);
 				}
