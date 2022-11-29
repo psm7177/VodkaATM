@@ -9,9 +9,11 @@ private:
 	int id;
 	string tnsType;
 	Account* myAccount;
+	int myValance;
 	int value;
 	int fee;
 	Account* transferAccount;
+	int transferValance;
 	string errorMessage;
 	string GetDeposit();
 	string GetWithdrawal();
@@ -22,6 +24,8 @@ public:
 	void SetWithdrawal(Account* account, int value, int fee, string message);
 	void SetTransfer(Account* account, Account* transferAccount, int value, int fee, string message);
 	void SetErrorMessage(string e);
+	void SetValance(Account* account);
+	void SetValance(Account* account, Account* transferAccount);
 	string GetInfo();
 	string GetType();
 	Account* GetMyAccount();

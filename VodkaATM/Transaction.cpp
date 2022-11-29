@@ -15,6 +15,7 @@ string Transaction::GetDeposit() {
 		else ans += "입금 계좌 : " + (*myAccount).GetAccNum() + "\n";
 		ans += "거래량: " + to_string(value) + "\n";
 		ans += "거래 수수료: " + to_string(fee) + "\n";
+		ans += "잔액 : " + to_string(myValance) + "\n";
 		ans += "특이사항: " + errorMessage + "\n";
 	}
 	else {
@@ -24,6 +25,7 @@ string Transaction::GetDeposit() {
 		else ans += "to : " + (*myAccount).GetAccNum() + "\n";
 		ans += "Transaction Amount: " + to_string(value) + "\n";
 		ans += "Transaction Fee: " + to_string(fee) + "\n";
+		ans += "Valance : " + to_string(myValance) + "\n";
 		ans += "Remark: " + errorMessage + "\n";
 	}
 	return ans;
@@ -37,6 +39,7 @@ string Transaction::GetWithdrawal() {
 		else ans += "출금 계좌 : " + (*myAccount).GetAccNum() + "\n";
 		ans += "거래량: " + to_string(value) + "\n";
 		ans += "거래 수수료: " + to_string(fee) + "\n";
+		ans += "잔액 : " + to_string(myValance) + "\n";
 		ans += "특이사항: " + errorMessage + "\n";
 	}
 	else {
@@ -46,6 +49,7 @@ string Transaction::GetWithdrawal() {
 		else ans += "from : " + (*myAccount).GetAccNum() + "\n";
 		ans += "Transaction Amount: " + to_string(value) + "\n";
 		ans += "Transaction Fee: " + to_string(fee) + "\n";
+		ans += "Valance : " + to_string(myValance) + "\n";
 		ans += "Remark: " + errorMessage + "\n";
 	}
 	return ans;
@@ -61,6 +65,8 @@ string Transaction::GetTransfer() {
 		else ans += "받을 계좌 : " + (*transferAccount).GetAccNum() + "\n";
 		ans += "거래량: " + to_string(value) + "\n";
 		ans += "거래 수수료: " + to_string(fee) + "\n";
+		ans += "송금 계좌 잔액 : " + to_string(myValance) + "\n";
+		ans += "입금 계좌 잔액 : " + to_string(transferValance) + "\n";
 		ans += "특이사항: " + errorMessage + "\n";
 	}
 	else {
@@ -72,9 +78,18 @@ string Transaction::GetTransfer() {
 		else ans += "to : " + (*transferAccount).GetAccNum() + "\n";
 		ans += "Transaction Amount: " + to_string(value) + "\n";
 		ans += "Transaction Fee: " + to_string(fee) + "\n";
+		ans += "Valance(from) : " + to_string(myValance) + "\n";
+		ans += "Valance(to) : " + to_string(transferValance) + "\n";
 		ans += "Remark: " + errorMessage + "\n";
 	}
 	return ans;
+}
+void Transaction::SetValance(Account* account) {
+	myValance = account->GetValance();
+}
+void Transaction::SetValance(Account* account, Account* transferAccount) {
+	myValance = account->GetValance();
+	transferValance = transferAccount->GetValance();
 }
 void Transaction::SetDeposit(Account* account, int value, int fee, string message) {
 	tnsType = "Deposit";

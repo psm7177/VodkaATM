@@ -78,7 +78,7 @@ string ATM::GetMain(string s) {
 	string hline = "忙式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式忖\n";
 	string line = "弛                                        弛\n";
 	string tline = "戌式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式戎\n";
-	int nline = 30;
+	int nline = 40;
 	while (ans.length() < (lim + 2) * nline) {
 		if ((ans.length() / (lim + 2)) % 2 == 0) {
 			ans += line;
@@ -208,6 +208,7 @@ string ATM::Deposit(int money, string message, bool isit_cash) {
 
 	newtransaction->SetDeposit(this->insertedCard->GetAccount(), money, fee, message);
 	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	newtransaction->SetValance(this->insertedCard->GetAccount());
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
@@ -215,9 +216,6 @@ string ATM::Deposit(int money, string message, bool isit_cash) {
 }
 
 string ATM::Withdrawal(int money, string message) {
-	if (money > 500000) {
-		throw string("Too large money");
-	}
 	if (this->cash < money) {
 		throw string("low money error");
 	}
@@ -232,6 +230,7 @@ string ATM::Withdrawal(int money, string message) {
 
 	newtransaction->SetWithdrawal(this->insertedCard->GetAccount(), money, fee, message);
 	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	newtransaction->SetValance(this->insertedCard->GetAccount());
 	transaction_id++;
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
@@ -256,6 +255,7 @@ string ATM::Transfer(Account* source_account, Account* dest_account, int money, 
 
 	newtransaction->SetTransfer(source_account, dest_account, money, fee, message);
 	string error = this->insertedCard->GetAccount()->GetAccBank()->Query(newtransaction);
+	newtransaction->SetValance(source_account, dest_account);
 	transactions.push_back(newtransaction);
 	all_transactions.push_back(newtransaction);
 	transaction_id++;

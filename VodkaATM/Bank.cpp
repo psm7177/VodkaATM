@@ -74,7 +74,7 @@ string Bank::Query(Transaction* transaction) {
         if (type == "Deposit") {
             this->Deposit(myAccount, transaction->GetValue(), fee);
         }
-        else if (type == "Withdraw") {
+        else if (type == "Withdrawal") {
             this->Withdrawal(myAccount, transaction->GetValue(), fee);
         }
         else if (type == "Transfer") {
