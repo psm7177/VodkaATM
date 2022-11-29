@@ -78,7 +78,7 @@ string ATM::GetMain(string s) {
 	string hline = "忙式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式忖\n";
 	string line = "弛                                        弛\n";
 	string tline = "戌式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式式戎\n";
-	int nline = 20;
+	int nline = 30;
 	while (ans.length() < (lim + 2) * nline) {
 		if ((ans.length() / (lim + 2)) % 2 == 0) {
 			ans += line;
@@ -160,7 +160,9 @@ string MultiATM::InsertCard(Card* mycard) {
 
 
 string ATM::CloseSession() {
-	ShowTransactionHistory(this->insertedCard->isAdmin);
+	if (this->insertedCard != nullptr) {
+		ShowTransactionHistory(this->insertedCard->isAdmin);
+	}
 	this->transactions = list<Transaction*>();
 	this->insertedCard = nullptr;
 	//End session and show transactions
@@ -330,7 +332,16 @@ string ATM::RunSession() {
 	cin >> input;
 	if (input == "Cancel") return CloseSession();
 	try {
-		if (InsertCard(allCard[stoi(input)]) != "Card Verifyed") return CloseSession();
+		if (stoi(input) > Card::cardIdCount) {
+			ShowUI("Not valid card");
+			cin >> input;
+			return CloseSession();
+		}
+		if (InsertCard(allCard[stoi(input)]) != "Card Verifyed") {
+			ShowUI("Not valid card");
+			cin >> input;
+			return CloseSession();
+		}
 	}
 	catch (...) {
 		if (input == "Cancel") return CloseSession();
@@ -355,9 +366,10 @@ string ATM::RunSession() {
 		}
 	}
 	for (int i = 0; i < 3; ++i) {
-		string transfer_type;
-		string money;
-		string input2;
+		string transfer_type = "";
+		string money = "";
+		string input2 = "";
+		bool is_cash = true;
 		ShowUI("1. Deposit\n2. Withdrawal\n3. Transfer");
 		cin >> input;
 		if (input == "Cancel") return CloseSession();
@@ -368,10 +380,12 @@ string ATM::RunSession() {
 		}
 
 		if (input != "3") {
-			ShowUI("1. Cash\n2. Check");
-			cin >> input2;
-			if (input2 == "Cancel") return CloseSession();
-			bool is_cash = stoi(input2) == 1 ? true : false;
+			if (input == "1") {
+				ShowUI("1. Cash\n2. Check");
+				cin >> input2;
+				if (input2 == "Cancel") return CloseSession();
+				bool is_cash = stoi(input2) == 1 ? true : false;
+			}
 			ShowUI("Amount of Money");
 			cin >> money;
 			string message;
@@ -390,12 +404,19 @@ string ATM::RunSession() {
 				cin >> input;
 				return CloseSession();
 			}
+			if (i == 2) break;
 			ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
 			cin >> input;
 			if (input == "Cancel") return CloseSession();
 			if (stoi(input) == 2) break;
 		}
 		else {
+			if (transfer_type == "1") {
+				ShowUI("1. Cash\n2. Check");
+				cin >> input2;
+				if (input2 == "Cancel") return CloseSession();
+				is_cash = stoi(input2) == 1 ? true : false;
+			}
 			ShowUI("Amount of Money");
 			cin >> money;
 			if (money == "Cancel") return CloseSession();
@@ -410,25 +431,21 @@ string ATM::RunSession() {
 				cin >> acc_num;
 				if (acc_num == "Cancel") return CloseSession();
 				if (stoi(transfer_type) == 1) {
-					ShowUI("1. Cash\n2. Check");
-					cin >> input2;
-					if (input2 == "Cancel") return CloseSession();
-					bool is_cash = stoi(input2) == 1 ? true : false;
 					message = Transfer(BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", is_cash);
 				}
 				else {
-					message = Transfer(BankManager::instance()->GetBank(sbank_name)->GetAccount(sacc_num), \
+					message = Transfer(this->insertedCard->GetAccount(), \
 						BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", false);
 				}
-				break;
 			}
 			catch (string e) {
 				ShowUI(e);
 				cin >> input;
 				return CloseSession();
 			}
+			if (i == 2) break;
 			ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
 			cin >> input;
 			if (input == "Cancel") return CloseSession();

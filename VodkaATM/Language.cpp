@@ -34,7 +34,7 @@ string Language::Eng2Kor(string s) {
 	if (s == "Wrong password 3/3 \nLimit exceeded. \nPress any key.") {
 		return "잘못된 비밀번호 3/3 \n한도를 초과하였습니다.\n아무 키를 입력하세요.";
 	}
-	
+
 	if (s == "1. Deposit\n2. Withdrawal\n3. Transfer") {
 		return "1. 입금\n2. 출금\n3. 이체";
 	}

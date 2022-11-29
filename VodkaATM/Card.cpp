@@ -10,5 +10,5 @@ Card::Card(bool isadmin, Account* accountaddress) {
 }
 
 Account* Card::GetAccount() {
-	return account;
+    return account;
 }
