@@ -406,6 +406,7 @@ string ATM::RunSession() {
 			}
 			if (i == 2) break;
 			ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
+			cout << "ATM cash: " << cash << endl;
 			cin >> input;
 			if (input == "Cancel") return CloseSession();
 			if (stoi(input) == 2) break;
@@ -447,6 +448,7 @@ string ATM::RunSession() {
 			}
 			if (i == 2) break;
 			ShowUI(message + Language::Eng2Kor("\n1. Next transaction\n2. Exit"));
+			cout << "ATM cash: " << cash << endl;
 			cin >> input;
 			if (input == "Cancel") return CloseSession();
 			if (stoi(input) == 2) break;
