@@ -393,11 +393,9 @@ string ATM::RunSession() {
 				switch (stoi(input)) {
 				case 1:
 					message = Deposit(stoi(money), "", is_cash);
-					cout << "ATM cash: " << cash << endl;
 					break;
 				case 2:
 					message = Withdrawal(stoi(money), "");
-					cout << "ATM cash: " << cash << endl;
 					break;
 				}
 			}
@@ -436,13 +434,11 @@ string ATM::RunSession() {
 				if (stoi(transfer_type) == 1) {
 					message = Transfer(BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", is_cash);
-					cout << "ATM cash: " << cash << endl;
 				}
 				else {
 					message = Transfer(this->insertedCard->GetAccount(), \
 						BankManager::instance()->GetBank(bank_name)->GetAccount(acc_num), \
 						stoi(money), "", false);
-					cout << "ATM cash: " << cash << endl;
 				}
 			}
 			catch (string e) {
