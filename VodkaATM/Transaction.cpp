@@ -85,11 +85,11 @@ string Transaction::GetTransfer() {
 	return ans;
 }
 void Transaction::SetValance(Account* account) {
-	myValance = account->GetValance();
+	if (account != nullptr) myValance = account->GetValance();
 }
 void Transaction::SetValance(Account* account, Account* transferAccount) {
-	myValance = account->GetValance();
-	transferValance = transferAccount->GetValance();
+	if (account != nullptr) myValance = account->GetValance();
+	if (transferAccount != nullptr) transferValance = transferAccount->GetValance();
 }
 void Transaction::SetDeposit(Account* account, int value, int fee, string message) {
 	tnsType = "Deposit";
