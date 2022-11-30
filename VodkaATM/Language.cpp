@@ -110,5 +110,14 @@ string Language::Eng2Kor(string s) {
 	if (s == "\nPress any key to continue") {
 		return "\n아무 키를 눌러 계속";
 	}
+	if (s == "Amount of Money including transfer fee") {
+		return "수수료 포함 금액";
+	}
+	if (s == "Are you sure it is including fee? : ") {
+		return "수수료를 포함한 금액이 맞습니까? : ";
+	}
+	if (s == "\nPress OK or Cancel") {
+		return "\nOK 혹은 Cancel을 입력하세요";
+	}
 	return s;
 }

@@ -418,9 +418,14 @@ string ATM::RunSession() {
 				if (input2 == "Cancel") return CloseSession();
 				is_cash = stoi(input2) == 1 ? true : false;
 			}
-			ShowUI("Amount of Money");
+			ShowUI("Amount of Money including transfer fee");
 			cin >> money;
 			if (money == "Cancel") return CloseSession();
+			if (transfer_type == "1") {
+				ShowUI(Language::Eng2Kor("Are you sure it is including fee? : ") + money + Language::Eng2Kor("\nPress OK or Cancel"));
+				cin >> input;
+				if (input == "Cancel") return CloseSession();
+			}
 			string message;
 			try {
 				string bank_name;
